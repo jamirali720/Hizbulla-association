@@ -43,7 +43,7 @@ const RegistrationForm = () => {
                     className={`form-control ${errors.fullName ? "is-invalid" : ""}`}
                     placeholder="আপনার নাম লিখুন"
                     {...register("fullName", {
-                      required: "Full name is required",
+                      required: "আপনার নাম অবশ্যই দিতে হবে",
                       minLength: {
                         value: 3,
                         message: "Name must be at least 3 characters",
@@ -53,6 +53,53 @@ const RegistrationForm = () => {
                   {errors.fullName && (
                     <div className="invalid-feedback">
                       {errors.fullName.message}
+                    </div>
+                  )}
+                </div>
+
+                {/* জেলা নির্বাচন */}
+
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">জেলা</label>
+                  <input
+                    type="text"
+                    defaultValue="কুমিল্লা"
+                    className={`form-control ${errors.district ? "is-invalid" : ""}`}
+                    placeholder="আপনার জেলার নাম লিখুন"
+                    {...register("district", {
+                      required: "আপনার নাম অবশ্যই দিতে হবে",
+                      minLength: {
+                        value: 3,
+                        message: "Name must be at least 3 characters",
+                      },
+                    })}
+                  />
+                  {errors.district && (
+                    <div className="invalid-feedback">
+                      {errors.district.message}
+                    </div>
+                  )}
+                </div>
+                {/* জেলা নির্বাচন */}
+
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">উপজেলা</label>
+                  <input
+                    type="text"
+                    defaultValue="তিতাস"
+                    className={`form-control ${errors.upazila ? "is-invalid" : ""}`}
+                    placeholder="আপনার উপজেলার নাম লিখুন"
+                    {...register("upazila", {
+                      required: "আপনার উপজেলা অবশ্যই দিতে হবে",
+                      minLength: {
+                        value: 3,
+                        message: "Name must be at least 3 characters",
+                      },
+                    })}
+                  />
+                  {errors.upazila && (
+                    <div className="invalid-feedback">
+                      {errors.upazila.message}
                     </div>
                   )}
                 </div>
@@ -89,7 +136,9 @@ const RegistrationForm = () => {
                 </select>
                 {errors.ward && <div className="invalid-feedback">{errors.ward.message}</div>}
               </div>
-                  {/* choose  */}
+
+
+                {/* choose  */}
                  <div className="mb-3">
                 <label className="form-label fw-semibold">Country</label>
                 <select
@@ -165,26 +214,26 @@ const RegistrationForm = () => {
                 {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
               </div>
 
-                {/* Email Address */}
+                {/* মোবাইল নাম্বার */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    Phone/Email Address
+                    মোবাইল নাম্বার
                   </label>
                   <input
-                    type="email"
-                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                    type="phone"
+                    className={`form-control ${errors.phone ? "is-invalid" : ""}`}
                     placeholder="আপনার মোবাইল অথবা ই-মেইল দিন"
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\$/i,
-                        message: "Invalid email address",
+                    {...register("phone", {
+                      required: "মোবাইল নাম্বার অবশ্যই দিতে হবে",
+                      pattern: {                    
+                        value: /^(\+88)?01[3-9]\d{8}$/,
+                        message: "আপনার মোবাইল নম্বর সঠিক নয় ❌",
                       },
                     })}
                   />
-                  {errors.email && (
+                  {errors.phone && (
                     <div className="invalid-feedback">
-                      {errors.email.message}
+                      {errors.phone.message}
                     </div>
                   )}
                 </div>
