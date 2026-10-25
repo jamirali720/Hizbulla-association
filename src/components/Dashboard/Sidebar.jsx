@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
-import {
-  Home,
+import {  
+  SquareDashedKanban,
   LayoutDashboard,
   User,
   Settings,
@@ -13,6 +13,8 @@ import {
 const menuItems = [
   { name: "Dashboard", link: "", icon: LayoutDashboard },
   { name: "Registration", link: "registration", icon: BuildingComplexPlus },
+  { name: "Management", link: "management", icon: SquareDashedKanban },
+  { name: "Committees", link: "committees", icon: SquareDashedKanban },
   { name: "Profile", link: "profile", icon: User },
   { name: "Settings", link: "settings", icon: Settings },
   { name: "Logout", link: "logout", icon: FiLogOut },
@@ -25,7 +27,7 @@ const Sidebar = () => {
   const { user, logoutUser } = useState({});
   const location = useLocation();
 
-console.log(location.pathname)
+
 
   
 

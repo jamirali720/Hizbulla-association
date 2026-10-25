@@ -1,5 +1,5 @@
-const userRoles = ["অ্যাডমিন", "ইউজার", "মুরিদ", "মুহিব্বীন"];
-
+const userRoles = ["অ্যাডমিন", "ইউজার"];
+export const userStatus = ["মুরীদ", "মুহিব্বীন"];
 const committeePosts = [
   "সভাপতি",
   "সহ-সভাপতি",
@@ -36,17 +36,20 @@ const unionNames = [
   "মজিদপুর",
 ];
 
-const wardNumbers = [
-  "এক",
-  "দুই",
-  "তিন",
-  "চার",
-  "পাঁচ",
-  "ছয়",
-  "সাত",
-  "আট",
-  "নয়",
+
+
+ const wardNumbers = [
+  "ওয়ার্ড-এক",
+  "ওয়ার্ড-দুই",
+  "ওয়ার্ড-তিন",
+  "ওয়ার্ড-চার",
+  "ওয়ার্ড-পাঁচ",
+  "ওয়ার্ড-ছয়",
+  "ওয়ার্ড-সাত",
+  "ওয়ার্ড-আট",
+  "ওয়ার্ড-নয়",
 ];
+const committeeLevels = ["উপজেলা", "ইউনিয়ন", "ওয়ার্ড"];
+const committeeNames = ["তিতাস উপজেলা কমিটি", "ইউনিয়ন কমিটি", "ওয়ার্ড কমিটি"];
 
-
-export { committeePosts, unionNames, userRoles, wardNumbers };
+export { committeePosts, unionNames, userRoles, wardNumbers,committeeNames, committeeLevels };

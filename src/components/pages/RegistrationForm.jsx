@@ -1,28 +1,85 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { unionNames, wardNumbers } from "../../utils/helper";
-
-
+import locations from "../../data/bangladeshLocations.json";
+import { AxiosInstance } from "./../../utils/axiosInstance";
+import { toast } from 'react-toastify';
+import { userStatus } from "../../utils/helper";
 
 const RegistrationForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
   } = useForm({
-    mode: "onTouched", // Validates fields when user clicks away
+    mode: "onTouched",
+    defaultValues: {
+      upazilaName: "",
+      union: "",
+      ward: "",
+      village: "",
+    }, // Validates fields when user clicks away
   });
 
-  const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Registered Data:", data);
-    alert("Registration Successful!");
-    reset();
+  // Watch selected values
+  const upazilaName = watch("upazilaName");
+  const union = watch("union");
+  const ward = watch("ward");
+
+  // Get dependent data
+  const selectedUpazila = locations.find(
+    (item) => item.upazilaName === upazilaName,
+  );
+
+  const unions = selectedUpazila?.unions ?? [];
+
+  const selectedUnion = unions.find((item) => item.name === union);
+
+  const wards = selectedUnion?.wards ?? [];
+
+  const selectedWard = wards.find((item) => item.name === ward);
+
+  const villages = selectedWard?.villages ?? [];
+
+  // Reset child fields
+  const handleUpazilaChange = () => {
+    setValue("union", "", { shouldValidate: true });
+    setValue("ward", "", { shouldValidate: true });
+    setValue("village", "", { shouldValidate: true });
   };
 
-  // Watch password field to validate confirm password match
-  const password = watch("password");
+  const handleUnionChange = () => {
+    setValue("ward", "", { shouldValidate: true });
+    setValue("village", "", { shouldValidate: true });
+  };
+
+  const handleWardChange = () => {
+    setValue("village", "", { shouldValidate: true });
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await AxiosInstance.post("/auth/signup", data);
+      console.log(res.data)
+      toast.success(res.data.message)
+       reset();
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.log("Backend Error Message:", error.response.data.message);
+       toast.error(error.response.data.message);
+      } else {
+        console.log("Something else went wrong:", error.message);
+      }
+    }
+    
+   
+  };
+
+
 
   return (
     <div>
@@ -37,12 +94,12 @@ const RegistrationForm = () => {
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 {/* Full Name */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">Full Name</label>
+                  <label className="form-label fw-semibold">আপনার নাম</label>
                   <input
                     type="text"
-                    className={`form-control ${errors.fullName ? "is-invalid" : ""}`}
+                    className={`form-control ${errors.fullname ? "is-invalid" : ""}`}
                     placeholder="আপনার নাম লিখুন"
-                    {...register("fullName", {
+                    {...register("fullname", {
                       required: "আপনার নাম অবশ্যই দিতে হবে",
                       minLength: {
                         value: 3,
@@ -50,9 +107,9 @@ const RegistrationForm = () => {
                       },
                     })}
                   />
-                  {errors.fullName && (
+                  {errors.fullname && (
                     <div className="invalid-feedback">
-                      {errors.fullName.message}
+                      {errors.fullname.message}
                     </div>
                   )}
                 </div>
@@ -80,139 +137,116 @@ const RegistrationForm = () => {
                     </div>
                   )}
                 </div>
-                {/* জেলা নির্বাচন */}
 
+                {/* Upazila selection */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">উপজেলা</label>
-                  <input
-                    type="text"
-                    defaultValue="তিতাস"
-                    className={`form-control ${errors.upazila ? "is-invalid" : ""}`}
-                    placeholder="আপনার উপজেলার নাম লিখুন"
-                    {...register("upazila", {
-                      required: "আপনার উপজেলা অবশ্যই দিতে হবে",
-                      minLength: {
-                        value: 3,
-                        message: "Name must be at least 3 characters",
-                      },
+
+                  <select
+                    className="form-select"
+                    {...register("upazilaName", {
+                      required: "আপনার উপজেলা নির্বাচন করতে হবে",
+                      onChange: handleUpazilaChange,
                     })}
-                  />
+                  >
+                    <option value="">উপজেলা নির্বাচন করুন</option>
+
+                    {locations.map((item) => (
+                      <option key={item.id} value={item.upazilaName}>
+                        {item.upazilaName}
+                      </option>
+                    ))}
+                  </select>
+
                   {errors.upazila && (
-                    <div className="invalid-feedback">
+                    <small className="text-danger">
                       {errors.upazila.message}
-                    </div>
+                    </small>
                   )}
                 </div>
-                  {/* choose  */}
-                 <div className="mb-3">
-                <label className="form-label fw-semibold">ইউনিয়ন নির্বাচন করুন</label>
-                <select
-                  className={`form-select ${errors.country ? 'is-invalid' : ''}`}
-                  {...register("union", { required: "Please select your union" })}
-                >
-                  {/* <option value="">Choose a union...</option> */}
-                  {
-                    unionNames.map((item, index) => (
-                      <option key={index} value={item}> {item}</option>
-                    ))
-                  }
-                  
-                </select>
-                {errors.union && <div className="invalid-feedback">{errors.union.message}</div>}
-              </div>
-                  {/* choose  */}
-                 <div className="mb-3">
-                <label className="form-label fw-semibold">ওয়ার্ড নং নির্বাচন করুন</label>
-                <select
-                  className={`form-select ${errors.ward ? 'is-invalid' : ''}`}
-                  {...register("ward", { required: "Please select your ward" })}
-                >
-                  {/* <option value="">Choose a ward...</option> */}
-                  {
-                    wardNumbers.map((item, index) => (
-                      <option key={index} value={item}> {item}</option>
-                    ))
-                  }
-                </select>
-                {errors.ward && <div className="invalid-feedback">{errors.ward.message}</div>}
-              </div>
 
+                {/* Union */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">ইউনিয়ন</label>
 
-                {/* choose  */}
-                 <div className="mb-3">
-                <label className="form-label fw-semibold">Country</label>
-                <select
-                  className={`form-select ${errors.country ? 'is-invalid' : ''}`}
-                  {...register("country", { required: "Please select your country" })}
-                >
-                  <option value="">Choose a country...</option>
-                  <option value="BD">Bangladesh</option>
-                  <option value="US">United States</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="CA">Canada</option>
-                </select>
-                {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
-              </div>
-                  {/* choose  */}
-                 <div className="mb-3">
-                <label className="form-label fw-semibold">Country</label>
-                <select
-                  className={`form-select ${errors.country ? 'is-invalid' : ''}`}
-                  {...register("country", { required: "Please select your country" })}
-                >
-                  <option value="">Choose a country...</option>
-                  <option value="BD">Bangladesh</option>
-                  <option value="US">United States</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="CA">Canada</option>
-                </select>
-                {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
-              </div>
-                  {/* choose  */}
-                 <div className="mb-3">
-                <label className="form-label fw-semibold">Country</label>
-                <select
-                  className={`form-select ${errors.country ? 'is-invalid' : ''}`}
-                  {...register("country", { required: "Please select your country" })}
-                >
-                  <option value="">Choose a country...</option>
-                  <option value="BD">Bangladesh</option>
-                  <option value="US">United States</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="CA">Canada</option>
-                </select>
-                {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
-              </div>
-                  {/* choose  */}
-                 <div className="mb-3">
-                <label className="form-label fw-semibold">Country</label>
-                <select
-                  className={`form-select ${errors.country ? 'is-invalid' : ''}`}
-                  {...register("country", { required: "Please select your country" })}
-                >
-                  <option value="">Choose a country...</option>
-                  <option value="BD">Bangladesh</option>
-                  <option value="US">United States</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="CA">Canada</option>
-                </select>
-                {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
-              </div>
-                  {/* choose  */}
-                 <div className="mb-3">
-                <label className="form-label fw-semibold">Country</label>
-                <select
-                  className={`form-select ${errors.country ? 'is-invalid' : ''}`}
-                  {...register("country", { required: "Please select your country" })}
-                >
-                  <option value="">Choose a country...</option>
-                  <option value="BD">Bangladesh</option>
-                  <option value="US">United States</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="CA">Canada</option>
-                </select>
-                {errors.country && <div className="invalid-feedback">{errors.country.message}</div>}
-              </div>
+                  <select
+                    className="form-select"
+                    disabled={!upazilaName}
+                    {...register("union", {
+                      required: "আপনার ইউনিয়ন নির্বাচন করতে হবে",
+                      onChange: handleUnionChange,
+                    })}
+                  >
+                    <option value="">ইউনিয়ন নির্বাচন করুন</option>
+
+                    {unions.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {errors.union && (
+                    <small className="text-danger">
+                      {errors.union.message}
+                    </small>
+                  )}
+                </div>
+
+                {/* Ward */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    ওয়ার্ড নির্বাচন
+                  </label>
+
+                  <select
+                    className="form-select"
+                    disabled={!union}
+                    {...register("ward", {
+                      required: "আপনার ওয়ার্ড নিবাচন করতে হবে",
+                      onChange: handleWardChange,
+                    })}
+                  >
+                    <option value="">ওয়ার্ড নির্বাচন করুন</option>
+
+                    {wards.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {errors.ward && (
+                    <small className="text-danger">{errors.ward.message}</small>
+                  )}
+                </div>
+
+                {/* Village */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">গ্রাম</label>
+
+                  <select
+                    className="form-select"
+                    disabled={!ward}
+                    {...register("village", {
+                      required: "আপনার গ্রাম নির্বাচন করতে হবে",
+                    })}
+                  >
+                    <option value="">গ্রাম নির্বাচন করুন</option>
+
+                    {villages.map((item) => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {errors.village && (
+                    <small className="text-danger">
+                      {errors.village.message}
+                    </small>
+                  )}
+                </div>
 
                 {/* মোবাইল নাম্বার */}
                 <div className="mb-3">
@@ -222,10 +256,10 @@ const RegistrationForm = () => {
                   <input
                     type="phone"
                     className={`form-control ${errors.phone ? "is-invalid" : ""}`}
-                    placeholder="আপনার মোবাইল অথবা ই-মেইল দিন"
+                    placeholder="আপনার মোবাইল নম্বর দিন"
                     {...register("phone", {
                       required: "মোবাইল নাম্বার অবশ্যই দিতে হবে",
-                      pattern: {                    
+                      pattern: {
                         value: /^(\+88)?01[3-9]\d{8}$/,
                         message: "আপনার মোবাইল নম্বর সঠিক নয় ❌",
                       },
@@ -238,21 +272,58 @@ const RegistrationForm = () => {
                   )}
                 </div>
 
+                {/* মুরীদ না মোহিব্বীন */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    নির্বাচন করুন
+                  </label>
+
+                  <select
+                    className="form-select"
+                    {...register("position", {
+                      required: "আপনার অবস্থান নির্বাচন করুন",
+                    })}
+                  >
+                    <option value="">আপনার অবস্থা নির্বাচন করুন</option>
+
+                    {userStatus.map((item, index) => (
+                      <option key={index} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+
+                  {errors.position && (
+                    <small className="text-danger">
+                      {errors.position.message}
+                    </small>
+                  )}
+                </div>
+
                 {/* Password */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Password</label>
-                  <input
-                    type="password"
-                    className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                    placeholder="••••••••"
-                    {...register("password", {
-                      required: "Password is required",
-                      minLength: {
-                        value: 8,
-                        message: "Password must be at least 8 characters",
-                      },
-                    })}
-                  />
+                  <div className="flex justify-around">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                      placeholder="••••••••"
+                      {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 6,
+                          message: "Password must be at least 8 characters",
+                        },
+                      })}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
                   {errors.password && (
                     <div className="invalid-feedback">
                       {errors.password.message}
@@ -260,13 +331,13 @@ const RegistrationForm = () => {
                   )}
                 </div>
 
-                {/* Confirm Password */}
+                {/* Confirm Password
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
                     Confirm Password
                   </label>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`}
                     placeholder="••••••••"
                     {...register("confirmPassword", {
@@ -280,10 +351,10 @@ const RegistrationForm = () => {
                       {errors.confirmPassword.message}
                     </div>
                   )}
-                </div>
+                </div> */}
 
                 {/* Terms and Conditions */}
-                <div className="mb-4 form-check">
+                {/* <div className="mb-4 form-check">
                   <input
                     type="checkbox"
                     className={`form-check-input ${errors.terms ? "is-invalid" : ""}`}
@@ -303,7 +374,7 @@ const RegistrationForm = () => {
                       {errors.terms.message}
                     </div>
                   )}
-                </div>
+                </div> */}
 
                 {/* Submit Button */}
                 <button
