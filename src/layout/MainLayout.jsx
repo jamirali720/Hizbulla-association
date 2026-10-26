@@ -1,15 +1,15 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 const MainLayout = () => {
-  const location = useLocation();
+  
   return (
     <div className="w-screen md:w-full">
       <header>
         <Navbar />
       </header>
-      {/* {location.pathname === "/" && <Carousel />} */}
+    
 
       <section>
         <main>

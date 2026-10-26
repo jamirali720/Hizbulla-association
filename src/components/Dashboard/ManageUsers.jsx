@@ -31,7 +31,7 @@ const ManageUsers = () => {
 
   const handleDeleteUser = async (id) => {
     const res = await AxiosInstance.delete(
-      `http://localhost:5000/api/auth/delete-user/${id}`,
+      `/auth/delete-user/${id}`,
     );
 
     if (res.data) {
