@@ -108,6 +108,7 @@ const AddCombinedCommittee = () => {
       );
 
       console.log(response.data);
+     
       toast.success(response.data.message, {
         position: "top-center",
         autoClose: 5000,

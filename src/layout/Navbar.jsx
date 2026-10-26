@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import  { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,10 +48,7 @@ const Navbar = () => {
             ) : (
               <>
                 <button className="px-4 py-2 text-lg font-medium text-gray-700 hover:text-blue-600 transition cursor-pointer">
-                  <Link to="/auth">সাইন ইন</Link>
-                </button>
-                <button className="px-4 py-2 text-lg font-medium text-white btn  cursor-pointer">
-                  <Link to="/auth">সাইন আপ</Link>
+                  <Link to="/auth">Account</Link>
                 </button>
               </>
             )}
@@ -118,13 +115,14 @@ const Navbar = () => {
             Contact
           </Link>
           <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
-            <button className="btn btn-success cursor-pointer">সাইন ইন</button>
-            <button className="btn btn-success cursor-pointer">সাইন আপ</button>
+            <button className="btn btn-success cursor-pointer">
+              <Link className="text-white" to="/auth">Account</Link>
+            </button>
           </div>
         </div>
       )}
     </nav>
   );
-}
+};
 
 export default Navbar;

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AxiosInstance } from "../../utils/axiosInstance";
 import { numBang } from "bang-utils";
 import { toast } from "react-toastify";
@@ -10,8 +10,8 @@ const CommitteeList = () => {
   const [committees, setCommittees] = useState([]);
   const [unionName, setUnionName] = useState("");
   const [wardName, setWardName] = useState("");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [level, setLevel] = useState("upazila");
 
   const selectedUpazila = locations.find((item) => item.upazilaName);
@@ -49,22 +49,13 @@ const CommitteeList = () => {
       );
     }
   };
-  // const totalPages = Math.ceil(committees.length / itemsPerPage);
 
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-  // const currentUsers = committees.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(committees.length / itemsPerPage);
 
-  // const filteredCommittees = useMemo(() => {
-  //   if (!level || level === "All") {
-  //     return committees;
-  //   }
-  //   return committees.filter(
-  //     (item) => item.committeeLevel.toString() === level.toString(),
-  //   );
-  // }, [committees, level]);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentUsers = committees.slice(startIndex, endIndex);
 
-  console.log(level, wardName)
   return (
     <div>
       <main>
@@ -75,7 +66,7 @@ const CommitteeList = () => {
               <strong className="text-blue-700 font-bold">
                 {numBang(committees.length)}
               </strong>{" "}
-              জন পাীরভাই/মুহিব্বীন আছেন।
+              জন কমিটি সদস্য আছে।
             </h3>
           </div>
           <div className="w-1/4">
@@ -86,7 +77,7 @@ const CommitteeList = () => {
               onChange={(e) => setLevel(e.target.value)}
             >
               {committeeType.map((item) => (
-                <option value={item.id}>{item.name} </option>
+                <option value={item.id} key={item.id}>{item.name} </option>
               ))}
             </select>
           </div>
@@ -103,7 +94,7 @@ const CommitteeList = () => {
                 >
                   <option value="">ইউনিয়ন নির্বাচন করুন</option>
                   {unions.map((item) => (
-                    <option value={item.name}>{item.name} </option>
+                    <option value={item.name} key={item.id}>{item.name} </option>
                   ))}
                 </select>
               </div>
@@ -122,7 +113,7 @@ const CommitteeList = () => {
                 >
                   <option value="">ওয়ার্ড নির্বাচন করুন</option>
                   {wards.map((item) => (
-                    <option value={item.name}>{item.name} </option>
+                    <option value={item.name} key={item.id}>{item.name} </option>
                   ))}
                 </select>
               </div>
@@ -130,8 +121,8 @@ const CommitteeList = () => {
           </div>
         </div>
         <div className="mx-auto p-4 overflow-auto">
-          {committees.length > 0 ? (
-            <table class="table table-striped table-hover table-bordered text-center">
+          {currentUsers.length > 0 ? (
+            <table className="table table-striped table-hover table-bordered text-center">
               <thead>
                 <tr>
                   <th>ছবি</th>
@@ -149,8 +140,8 @@ const CommitteeList = () => {
                 </tr>
               </thead>
               <tbody>
-                {committees.length > 0 &&
-                  committees.map((user, index) => (
+                {currentUsers.length > 0 &&
+                  currentUsers.map((user, index) => (
                     <tr key={index}>
                       <td className="text-success">
                         <img
@@ -170,7 +161,7 @@ const CommitteeList = () => {
                       <td className="text-success"> {user.user?.upazila} </td>
                       <td className="text-success"> {user.user?.district} </td>
                       <td className="text-success"> {user.user?.phone} </td>
-                      <td className="text-success"> {user.sorting} </td>
+                      <td className="text-success"> {user?.sorting} </td>
                       <td className="text-success md:flex justify-evenly">
                         <button
                           type="btn"
@@ -201,7 +192,7 @@ const CommitteeList = () => {
             </div>
           )}
 
-          {/* <div className="w-screen md:w-full md:h-24 flex justify-between items-center px-4 mb-2 bg-gray-100">
+          <div className="w-screen md:w-full md:h-24 flex justify-between items-center px-4 mb-2 bg-gray-100">
             <div className="mb-3">
               <label className="form-label fw-semibold">Show</label>
               <select
@@ -247,7 +238,7 @@ const CommitteeList = () => {
                 </button>
               )}
             </div>
-          </div> */}
+          </div>
         </div>
       </main>
     </div>
