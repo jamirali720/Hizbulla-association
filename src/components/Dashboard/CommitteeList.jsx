@@ -3,17 +3,31 @@ import { AxiosInstance } from "../../utils/axiosInstance";
 import { numBang } from "bang-utils";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { committeeType } from "../../utils/helper";
+import locations from "../../data/bangladeshLocations.json";
 
 const CommitteeList = () => {
   const [committees, setCommittees] = useState([]);
+  const [unionName, setUnionName] = useState("");
+  const [wardName, setWardName] = useState("");
   // const [currentPage, setCurrentPage] = useState(1);
   // const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [level, setLevel] = useState("");
+  const [level, setLevel] = useState("upazila");
+
+  const selectedUpazila = locations.find((item) => item.upazilaName);
+
+  const unions = selectedUpazila?.unions ?? [];
+
+  const selectedUnion = unions.find((item) => item.name);
+
+  const wards = selectedUnion?.wards ?? [];
 
   useEffect(() => {
-    const getUpazilasCommittee = async () => {
+    const getCommittees = async () => {
       try {
-        const res = await AxiosInstance.get(`/upazila`);
+        const res = await AxiosInstance.get(
+          `/${level}?union=${unionName}&ward=${wardName}`,
+        );
         if (res.data) {
           setCommittees(res.data.data);
         }
@@ -22,11 +36,11 @@ const CommitteeList = () => {
         console.log(error);
       }
     };
-    getUpazilasCommittee();
-  }, []);
+    getCommittees();
+  }, [level, wardName, unionName]);
 
   const handleDeleteUser = async (id) => {
-    const res = await AxiosInstance.delete(`/committee/delete/${id}`);
+    const res = await AxiosInstance.delete(`/${level}/${id}`);
     console.log(res);
     if (res.data) {
       toast.success(res.data.message);
@@ -50,7 +64,7 @@ const CommitteeList = () => {
   //   );
   // }, [committees, level]);
 
-  console.log(committees);
+  console.log(level, wardName)
   return (
     <div>
       <main>
@@ -71,12 +85,48 @@ const CommitteeList = () => {
               value={level}
               onChange={(e) => setLevel(e.target.value)}
             >
-              <option value="">কমিটির পর্যায় নির্বাচন করুন</option>
-              <option value="All">সকল কমিটি</option>
-              <option value="উপজেলা">উপজেলা কমিটি</option>
-              <option value="ইউনিয়ন">ইউনিয়ন কমিটি</option>
-              <option value="ওয়ার্ড">ওয়ার্ড কমিটি</option>
+              {committeeType.map((item) => (
+                <option value={item.id}>{item.name} </option>
+              ))}
             </select>
+          </div>
+          <div>
+            {level === "union" && (
+              <div className="w-1/4">
+                <select
+                  style={{ minWidth: "360px" }}
+                  className="form-select my-2 text-center"
+                  value={unionName}
+                  onChange={(e) => {
+                    setUnionName(e.target.value);
+                  }}
+                >
+                  <option value="">ইউনিয়ন নির্বাচন করুন</option>
+                  {unions.map((item) => (
+                    <option value={item.name}>{item.name} </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+          <div>
+            {level === "ward" && (
+              <div className="w-1/4">
+                <select
+                  style={{ minWidth: "360px" }}
+                  className="form-select my-2 text-center"
+                  value={wardName}
+                  onChange={(e) => {
+                    setWardName(e.target.value);
+                  }}
+                >
+                  <option value="">ওয়ার্ড নির্বাচন করুন</option>
+                  {wards.map((item) => (
+                    <option value={item.name}>{item.name} </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
         <div className="mx-auto p-4 overflow-auto">
@@ -94,50 +144,55 @@ const CommitteeList = () => {
                   <th>উপজেলা</th>
                   <th>জেলা</th>
                   <th>মোবাইল নাম্বার </th>
+                  <th>সিরিয়াল </th>
                   <th>সম্পাদন </th>
                 </tr>
               </thead>
               <tbody>
-                {committees.map((user, index) => (
-                  <tr key={index}>
-                    <td className="text-success">
-                      <img
-                        src="../../../public/minar.png"
-                        alt="minar"
-                        width="50"
-                        height="50"
-                      />
-                    </td>
+                {committees.length > 0 &&
+                  committees.map((user, index) => (
+                    <tr key={index}>
+                      <td className="text-success">
+                        <img
+                          src="../../../public/minar.png"
+                          alt="minar"
+                          width="50"
+                          height="50"
+                        />
+                      </td>
 
-                    <td className="text-success"> {user.user.fullname} </td>
-                    <td className="text-success"> {user.position} </td>
-                    <td className="text-success"> {user.committeeName} </td>
-                    <td className="text-success"> {user.user.village} </td>
-                    <td className="text-success"> {user.user.ward} </td>
-                    <td className="text-success"> {user.user.union} </td>
-                    <td className="text-success"> {user.user.upazila} </td>
-                    <td className="text-success"> {user.user.district} </td>
-                    <td className="text-success"> {user.user.phone} </td>
-                    <td className="text-success md:flex justify-evenly">
-                      <button
-                        type="btn"
-                        className="btn btn-danger  py-2 fw-semibold"
-                        onClick={() => handleDeleteUser(user._id)}
-                      >
-                        Delete
-                      </button>
-
-                      <Link to={`/dashboard/update-committee/${user._id}`}>
+                      <td className="text-success"> {user.user?.fullname} </td>
+                      <td className="text-success"> {user.position} </td>
+                      <td className="text-success"> {user.committeeName} </td>
+                      <td className="text-success"> {user.user?.village} </td>
+                      <td className="text-success"> {user.user?.ward} </td>
+                      <td className="text-success"> {user.user?.union} </td>
+                      <td className="text-success"> {user.user?.upazila} </td>
+                      <td className="text-success"> {user.user?.district} </td>
+                      <td className="text-success"> {user.user?.phone} </td>
+                      <td className="text-success"> {user.sorting} </td>
+                      <td className="text-success md:flex justify-evenly">
                         <button
                           type="btn"
-                          className="btn btn-primary  py-2 fw-semibold"
+                          className="btn btn-danger  py-2 fw-semibold"
+                          onClick={() => handleDeleteUser(user._id)}
                         >
-                          Edit
+                          Delete
                         </button>
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+
+                        <Link
+                          to={`/dashboard/update-committee/${level}/${user._id}`}
+                        >
+                          <button
+                            type="btn"
+                            className="btn btn-primary  py-2 fw-semibold"
+                          >
+                            Edit
+                          </button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           ) : (

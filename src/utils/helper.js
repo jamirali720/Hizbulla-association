@@ -51,5 +51,10 @@ const unionNames = [
 ];
 const committeeLevels = ["উপজেলা", "ইউনিয়ন", "ওয়ার্ড"];
 const committeeNames = ["তিতাস উপজেলা কমিটি", "ইউনিয়ন কমিটি", "ওয়ার্ড কমিটি"];
+const committeeType = [
+  { id: "upazila", name: "তিতাস উপজেলা কমিটি" },
+  { id: "union", name: "ইউনিয়ন কমিটি" },
+  { id: "ward", name: "ওয়ার্ড কমিটি" },
+];
 
-export { committeePosts, unionNames, userRoles, wardNumbers,committeeNames, committeeLevels };
+export { committeePosts, unionNames, userRoles,committeeType, wardNumbers,committeeNames, committeeLevels };

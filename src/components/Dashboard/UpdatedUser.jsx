@@ -4,12 +4,12 @@ import locations from "../../data/bangladeshLocations.json";
 import { AxiosInstance } from "./../../utils/axiosInstance";
 import { toast } from "react-toastify";
 import { userStatus } from "../../utils/helper";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UpdatedUser = () => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const refreshList = async () => {
       const resp = await AxiosInstance.get(
@@ -47,7 +47,7 @@ const UpdatedUser = () => {
   const ward = watch("ward");
 
   // Get dependent data
-  const selectedUpazila = locations.find((item) => item.name === upazila);
+  const selectedUpazila = locations.find((item) => item.upazilaName === upazila);
 
   const unions = selectedUpazila?.unions ?? [];
 
@@ -83,6 +83,7 @@ const UpdatedUser = () => {
       );
       
       toast.success(res.data.message);
+      navigate("/dashboard/management");
       reset();
     } catch (error) {
       if (error.response && error.response.data) {
@@ -157,8 +158,8 @@ const UpdatedUser = () => {
                     <option value="">উপজেলা নির্বাচন করুন</option>
 
                     {locations.map((item) => (
-                      <option key={item.id} value={item.name}>
-                        {item.name}
+                      <option key={item.id} value={item.upazilaName}>
+                        {item.upazilaName}
                       </option>
                     ))}
                   </select>

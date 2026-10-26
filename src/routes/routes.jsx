@@ -14,16 +14,13 @@ import RegistrationForm from "../components/pages/RegistrationForm";
 
 import ManageUsers from "./../components/Dashboard/ManageUsers";
 import UpdatedUser from "../components/Dashboard/UpdatedUser";
-import AddCommittee from "../components/Dashboard/AddCommittee";
+
 import CommitteeList from "./../components/Dashboard/CommitteeList";
 import UpdatedCommittee from "../components/Dashboard/UpdatedCommittee";
-import NewCommittee from "../components/committee/NewCommittee";
-import UpazilaPage from "../components/committee/UpazilaPage";
-import UnionPage from './../components/committee/UnionPage';
-import WardPage from "../components/committee/WardPage";
 import AddCombinedCommittee from "../components/Dashboard/AddCombinedCommittee";
-import BangladeshLocationSelector from "../components/home/BangladeshLocationSelector";
-
+import UnionUpdatedCommittee from "../components/Dashboard/UnionUpdatedCommittee";
+import WardUpdatedCommittee from "../components/Dashboard/WardUpdatedCommittee";
+import UpazilaUpdatedCommittee from "../components/Dashboard/UpazilaUpdatedCommittee";
 
 export const router = createBrowserRouter([
   {
@@ -34,35 +31,11 @@ export const router = createBrowserRouter([
         path: "",
         element: <Home />,
       },
-      {
-        path: "location",
-        element: <BangladeshLocationSelector />,
-      },
 
       {
         path: "auth",
         element: <Authentication />,
       },
-      
-      {
-        path: "new",
-        element: <NewCommittee />,
-        children: [
-          {
-            path: "upazilas",
-            element: <UpazilaPage />,
-          },
-          {
-            path: "unions",
-            element: <UnionPage />,
-          },
-          {
-            path: "wards",
-            element: <WardPage />,
-          },
-        ]
-      },
-      
 
       {
         path: "dashboard",
@@ -86,9 +59,24 @@ export const router = createBrowserRouter([
             element: <UpdatedUser />,
           },
           {
-            path: "update-committee/:committeeId",
+            path: "update-committee",
             element: <UpdatedCommittee />,
+            children: [
+              {
+                path: "upazila/:committeeId",
+                element: <UpazilaUpdatedCommittee />,
+              },
+              {
+                path: "union/:committeeId",
+                element: <UnionUpdatedCommittee />,
+              },
+              {
+                path: "ward/:committeeId",
+                element: <WardUpdatedCommittee />,
+              },
+            ],
           },
+
           {
             path: "profile",
             element: <Profile />,
@@ -99,7 +87,6 @@ export const router = createBrowserRouter([
           // },
           {
             path: "add-committe/:committeeId",
-            // element: <AddCommittee />,
             element: <AddCombinedCommittee />,
           },
           {

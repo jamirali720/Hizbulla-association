@@ -391,7 +391,7 @@ const RegistrationForm = () => {
                       <span>Registering...</span>
                     </>
                   ) : (
-                    "Sign Up"
+                    "Register"
                   )}
                 </button>
               </form>

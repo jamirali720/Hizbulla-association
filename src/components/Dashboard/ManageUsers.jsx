@@ -8,6 +8,7 @@ const ManageUsers = () => {
   const [usersList, setUsersList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+ 
 
   useEffect(() => {
     const refreshList = async () => {
@@ -35,6 +36,7 @@ const ManageUsers = () => {
 
     if (res.data) {
       toast.success(res.data.message);
+      
     }
   };
 
@@ -63,8 +65,7 @@ const ManageUsers = () => {
                   <th>ইউনিয়ন</th>
                   <th>ওয়ার্ড</th>
                   <th>গ্রাম</th>
-                  <th>পদবী </th>
-                  <th>কমিটির পদবী </th>
+                  <th>পদবী </th>                 
                   <th>মোবাইল নাম্বার </th>
                   <th>সম্পাদন </th>
                 </tr>
@@ -87,8 +88,7 @@ const ManageUsers = () => {
                     <td className="text-success"> {user.union} </td>
                     <td className="text-success"> {user.ward} </td>
                     <td className="text-success"> {user.village} </td>
-                    <td className="text-success"> {user.status} </td>
-                    <td className="text-success"> {user.userPost} </td>
+                    <td className="text-success"> {user.position} </td>                    
                     <td className="text-success"> {user.phone} </td>
                     <td className="text-success md:flex justify-evenly">
                       <button

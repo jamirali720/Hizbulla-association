@@ -2,14 +2,22 @@ import { useForm } from "react-hook-form";
 import { committeePosts } from "../../utils/helper.js";
 import { useParams } from "react-router-dom";
 import locations from "../../data/bangladeshLocations.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AxiosInstance } from "../../utils/axiosInstance.js";
 import { Bounce, toast } from "react-toastify";
 const AddCombinedCommittee = () => {
-  // ১. React Hook Form ইনিশিয়ালাইজ করুন
   const { committeeId } = useParams();
   const [unionId, setUnionId] = useState(null);
   const [wardId, setWardId] = useState(null);
+
+  useEffect(() => {
+    const fetchUpazilaInfo = async () => {
+      const resp = await AxiosInstance.get(`/upazila`);
+      console.log(resp);
+    };
+    fetchUpazilaInfo();
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -38,7 +46,7 @@ const AddCombinedCommittee = () => {
       ? "তিতাস উপজেলা কমিটি"
       : selectedCommittee === "union"
         ? "ইউনিয়ন কমিটি"
-        : "ওয়ার্ড কমিটি";
+        : "নং ওয়ার্ড কমিটি";
 
   const handleUnionIdChange = (e) => {
     const targetOptionId = e.target.options[e.target.selectedIndex].id;
@@ -59,22 +67,23 @@ const AddCombinedCommittee = () => {
     upazilaData.append("user", committeeId);
 
     const unionData = new FormData();
-    unionData.append("upazilaCommittee", "6adc5ac23f4cdb6df8871bb2");
     unionData.append("unionId", unionId);
     unionData.append("unionName", data.union);
     unionData.append("committeeName", `${data.union} ${committeeName}`);
-    unionData.append("positon", data.position);
+    unionData.append("position", data.position);
     unionData.append("user", committeeId);
+    unionData.append("upazilaId", "titas");
 
     const wardData = new FormData();
-    wardData.append("unionCommittee", "6adc5ac23f4cdb6df8871bb2");
+    wardData.append("unionId", unionId);
     wardData.append("wardId", wardId);
     wardData.append("wardName", data.ward);
+
     wardData.append(
       "committeeName",
-      `${data.ward?.split("-")[1]} নং ${committeeName}`,
+      `${data.ward?.split("-")[1]} ${committeeName}`,
     );
-    wardData.append("positon", data.position);
+    wardData.append("position", data.position);
     wardData.append("user", committeeId);
 
     const sendingData =
@@ -83,13 +92,14 @@ const AddCombinedCommittee = () => {
         : selectedCommittee === "union"
           ? unionData
           : wardData;
+
     // ফর্মের সব ডেটা loop করে FormData-তে যোগ করুন
     // Object.keys(data).forEach((key) => {
     //   formData.append(key, data[key]);
     // });
 
-    // const ds = Object.fromEntries(sendingData); //extracts form data
-    // console.log(ds);
+    const ds = Object.fromEntries(sendingData); //extracts form data
+    console.log(ds);
 
     try {
       const response = await AxiosInstance.post(
@@ -106,7 +116,7 @@ const AddCombinedCommittee = () => {
       reset();
     } catch (error) {
       if (error.response && error.response.data) {
-        console.log("Backend Error Message:", error.response.data.message);        
+        console.log("Backend Error Message:", error.response.data.message);
         toast.error(error.response.data.message, {
           position: "top-center",
           autoClose: 5000,
@@ -231,7 +241,7 @@ const AddCombinedCommittee = () => {
               </div>
 
               <div className="mb-3">
-                <label className="form-label fw-semibold">ইউনিয়ন</label>
+                <label className="form-label fw-semibold">ইউনিয়ন নির্বাচন</label>
 
                 <select
                   className="form-select"
@@ -286,21 +296,29 @@ const AddCombinedCommittee = () => {
                 )}
               </div>
               <div className="mb-3">
-                <label className="form-label fw-semibold">
-                  কমিটির নাম নির্বাচন
-                </label>
+                <label className="form-label fw-semibold">ইউনিয়ন নির্বাচন</label>
 
-                <select className="form-select" {...register("committeeName")}>
-                  <option value="">কমিটির নাম নির্বাচন করুন</option>
-                  <option value="ওয়ার্ড কমিটি">ওয়ার্ড কমিটি</option>
+                <select
+                  className="form-select"
+                  {...register("union", {
+                    required: "আপনার ইউনিয়ন নির্বাচন করতে হবে",
+                    onChange: handleUnionIdChange,
+                  })}
+                >
+                  <option value="">ইউনিয়ন নির্বাচন করুন</option>
+
+                  {unions.map((item) => (
+                    <option key={item.id} id={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
                 </select>
 
-                {errors.committeeName && (
-                  <small className="text-danger">
-                    {errors.committeeName.message}
-                  </small>
+                {errors.union && (
+                  <small className="text-danger">{errors.union.message}</small>
                 )}
               </div>
+              
               <div className="mb-3">
                 <label className="form-label fw-semibold">ওয়ার্ড</label>
 
