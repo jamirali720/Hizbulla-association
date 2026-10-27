@@ -10,6 +10,8 @@ import {
   // currencyToBang,
   // timeBang,
 } from "bang-utils";
+
+
 const Home = () => {
   const [search, setSearch] = useState("");
   const [upazilaName, setUpazilaName] = useState("তিতাস");
@@ -76,7 +78,7 @@ const Home = () => {
   return (
     <main>
       <div className="text-center my-3  md:flex justify-evenly">
-        <h3 style={{ color: "#ba1434" }}>আজ -  {banglaDate} </h3>
+        <h3 style={{ color: "#ba1434" }}>আজ - {banglaDate} </h3>
         <h1 style={{ color: "#ba1434" }}>
           সর্বমোট{" = "}
           <strong className="text-blue-700 font-bold">
@@ -191,8 +193,7 @@ const Home = () => {
       <div className="mx-auto p-4 overflow-auto">
         <table class="table table-striped table-hover table-bordered text-center">
           <thead>
-            <tr>
-              <th>ছবি</th>
+            <tr>              
               <th>ইউজার আইডি</th>
               <th>নাম</th>
               <th>জেলা</th>
@@ -207,16 +208,7 @@ const Home = () => {
           <tbody>
             {currentUsers.length > 0 &&
               currentUsers.map((user, index) => (
-                <tr key={index}>
-                  <td className="text-success">
-                    {" "}
-                    <img
-                      src="../../../public/minar.png"
-                      alt="minar"
-                      width="50"
-                      height="50"
-                    />{" "}
-                  </td>
+                <tr key={index}>                 
                   <td className="text-success"> {user.userId} </td>
                   <td className="text-success"> {user.fullname} </td>
                   <td className="text-success"> {user.district} </td>

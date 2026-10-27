@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { committeeType } from "../../utils/helper";
 import locations from "../../data/bangladeshLocations.json";
 
+
+
 const CommitteeList = () => {
   const [committees, setCommittees] = useState([]);
   const [unionName, setUnionName] = useState("");
@@ -77,7 +79,9 @@ const CommitteeList = () => {
               onChange={(e) => setLevel(e.target.value)}
             >
               {committeeType.map((item) => (
-                <option value={item.id} key={item.id}>{item.name} </option>
+                <option value={item.id} key={item.id}>
+                  {item.name}{" "}
+                </option>
               ))}
             </select>
           </div>
@@ -94,7 +98,9 @@ const CommitteeList = () => {
                 >
                   <option value="">ইউনিয়ন নির্বাচন করুন</option>
                   {unions.map((item) => (
-                    <option value={item.name} key={item.id}>{item.name} </option>
+                    <option value={item.name} key={item.id}>
+                      {item.name}{" "}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -113,7 +119,9 @@ const CommitteeList = () => {
                 >
                   <option value="">ওয়ার্ড নির্বাচন করুন</option>
                   {wards.map((item) => (
-                    <option value={item.name} key={item.id}>{item.name} </option>
+                    <option value={item.name} key={item.id}>
+                      {item.name}{" "}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -124,8 +132,7 @@ const CommitteeList = () => {
           {currentUsers.length > 0 ? (
             <table className="table table-striped table-hover table-bordered text-center">
               <thead>
-                <tr>
-                  <th>ছবি</th>
+                <tr>                  
                   <th>নাম</th>
                   <th>কমিটির পদবী </th>
                   <th>কমিটির পর্যায় </th>
@@ -142,16 +149,7 @@ const CommitteeList = () => {
               <tbody>
                 {currentUsers.length > 0 &&
                   currentUsers.map((user, index) => (
-                    <tr key={index}>
-                      <td className="text-success">
-                        <img
-                          src="../../../public/minar.png"
-                          alt="minar"
-                          width="50"
-                          height="50"
-                        />
-                      </td>
-
+                    <tr key={index}>               
                       <td className="text-success"> {user.user?.fullname} </td>
                       <td className="text-success"> {user.position} </td>
                       <td className="text-success"> {user.committeeName} </td>

@@ -57,7 +57,7 @@ const ManageUsers = () => {
             <table class="table table-striped table-hover table-bordered text-center">
               <thead>
                 <tr>
-                  <th>ছবি</th>
+                
                   <th>ইউজার আইডি</th>
                   <th>নাম</th>
                   <th>জেলা</th>
@@ -72,15 +72,7 @@ const ManageUsers = () => {
               </thead>
               <tbody>
                 {currentUsers.map((user, index) => (
-                  <tr key={index}>
-                    <td className="text-success">
-                      <img
-                        src="../../../public/minar.png"
-                        alt="minar"
-                        width="50"
-                        height="50"
-                      />
-                    </td>
+                  <tr key={index}>                   
                     <td className="text-success"> {user.userId} </td>
                     <td className="text-success"> {user.fullname} </td>
                     <td className="text-success"> {user.district} </td>
