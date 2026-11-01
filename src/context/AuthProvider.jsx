@@ -1,18 +1,14 @@
 import { createContext, useState } from "react";
 import { useContext } from "react";
-import { jwtDecode } from 'jwt-decode';
-import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   // Inside AuthContext.js
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   let initialUser;
-  if (
-    token &&
-    typeof token === "string" &&
-    token.split(".").length === 3
-  ) {
+  if (token && typeof token === "string" && token.split(".").length === 3) {
     try {
       const decoded = jwtDecode(token);
 
@@ -32,18 +28,17 @@ const AuthProvider = ({ children }) => {
 
   const login = (newToken) => {
     localStorage.setItem("token", newToken);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+
     setToken(newToken);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
-    delete axios.defaults.headers.common["Authorization"];
   };
 
   return (
-    <AuthContext.Provider value={{ token, initialUser,login, logout }}>
+    <AuthContext.Provider value={{ token, initialUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
