@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider.jsx";
+import { toast } from "react-toastify";
 
-const Navbar = () => {  
+const Navbar = () => {
   const { token, logout } = useAuth();
- 
+
   const [isOpen, setIsOpen] = useState(false);
-  // const [isLogged] = useState(token ? true : false);
+
   const handleLogout = () => {
+    toast.success("You have successfully logged out");
     logout();
   };
 
