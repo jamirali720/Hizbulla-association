@@ -52,7 +52,7 @@ const Navbar = () => {
                 onClick={handleLogout}
                 className="px-4 py-2 text-lg font-medium text-gray-700  rounded-lg transition shadow-sm cursor-pointer"
               >
-                <Link to="/dashboard/profile"> Logout</Link>
+                <Link to="/"> Logout</Link>
               </button>
             ) : (
               <>

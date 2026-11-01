@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import { useContext } from "react";
 import { jwtDecode } from 'jwt-decode';
+import axios from "axios";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
@@ -31,12 +32,14 @@ const AuthProvider = ({ children }) => {
 
   const login = (newToken) => {
     localStorage.setItem("token", newToken);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
     setToken(newToken);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
+    delete axios.defaults.headers.common["Authorization"];
   };
 
   return (
