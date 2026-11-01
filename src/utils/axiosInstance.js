@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export const AxiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://hizbulla-association-server-site.vercel.app/api",
   timeout: 5000,
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`, // akhane token bosbe
