@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import { useContext } from "react";
 import { jwtDecode } from "jwt-decode";
-
+import { toast } from "react-toastify";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
@@ -35,6 +35,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
+    toast.success("You have successfully logged out");
   };
 
   return (
