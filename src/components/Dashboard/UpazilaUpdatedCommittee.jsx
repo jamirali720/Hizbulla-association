@@ -71,7 +71,7 @@ const UpazilaUpdatedCommittee = () => {
                   </select>
                 </div>
 
-                {/* Union */}
+                {/* isActive */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
                     স্ট্যাটাস নির্বাচন
@@ -80,10 +80,29 @@ const UpazilaUpdatedCommittee = () => {
                   <select className="form-select" {...register("status")}>
                     <option value="">স্ট্যাটাস নির্বাচন করুন</option>
 
+                    <option key="" value="approved">
+                      Approved
+                    </option>
                     <option key="" value="active">
                       Active
                     </option>
-                    <option key="" value="inActive">
+                    <option key="" value="expired">
+                      Expired
+                    </option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    এ্যাকটিভ কিনা
+                  </label>
+
+                  <select className="form-select" {...register("isActive")}>
+                    <option value="">সক্রিয়তা নির্বাচন করুন</option>
+
+                    <option key="" value="true">
+                      Active
+                    </option>
+                    <option key="" value="false">
                       InActive
                     </option>
                   </select>

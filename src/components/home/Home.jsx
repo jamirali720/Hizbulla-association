@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AxiosInstance } from "../../utils/axiosInstance";
 import { userStatus } from "../../utils/helper";
 import locations from "../../data/bangladeshLocations.json";
+
 import {
   numBang,  
   // monthBang,
@@ -12,7 +13,7 @@ import {
 } from "bang-utils";
 
 
-const Home = () => {
+const Home = () => { 
   const [search, setSearch] = useState("");
   const [upazilaName, setUpazilaName] = useState("তিতাস");
   const [union, setUnion] = useState("");
@@ -23,7 +24,7 @@ const Home = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
+ 
   useEffect(() => {
     const refreshList = async () => {
       const res = await AxiosInstance.get(

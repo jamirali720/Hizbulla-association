@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { validate, operator } from "bd-phone-number-validator";
+import  { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AxiosInstance } from "../../utils/axiosInstance";
 
 const Authentication = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -11,7 +11,7 @@ const Authentication = () => {
 
   const [formData, setFormData] = useState({
     name: "",    
-    phoneOrEmail: "",
+    phone: "",
     password: "",
   });
 
@@ -22,14 +22,14 @@ const Authentication = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^(\+88)?01[3-9]\d{8}$/;
 
     
-    if(!emailRegex.test(formData.phoneOrEmail) && !phoneRegex.test(formData.phoneOrEmail)) {
-     toast.error("Please enter a valid email or Bangladeshi phone number.");
+    if(!phoneRegex.test(formData.phone)) {
+     toast.error("Please enter a valid Bangladeshi phone number.");
       return;
     }
 
@@ -39,10 +39,23 @@ const Authentication = () => {
      console.log("register data sumited")
     } else {
       console.log("Sign In Data:", {
-        phoneOrEmail: formData.phoneOrEmail,        
-        password: formData.password,
+        phone: formData.phone,        
+        password: formData.password,        
       });
-      console.log("login data sumited");
+
+     
+      const res = await AxiosInstance.post(
+        "/auth/login",
+        formData,
+      );
+
+      
+      if(res.data) {
+        localStorage.setItem("token", res.data.token);
+        toast.success(res.data.message);
+         console.log("login data sumited");
+      }
+     
     }
 
     console.log(formData)
@@ -137,13 +150,13 @@ const Authentication = () => {
 
               {/* Email */}
               <div className="mb-3">
-                <label className="form-label fw-semibold">Phone/Email Address</label>
+                <label className="form-label fw-semibold">Phone</label>
                 <input
                   type="text"
-                  name="phoneOrEmail"
+                  name="phone"
                   className="form-control form-control-lg"
-                  placeholder="Enter your phone/email"
-                  value={formData.phoneOrEmail}
+                  placeholder="Enter your phone"
+                  value={formData.phone}
                   onChange={handleChange}
                   autoComplete="email"
                   required
