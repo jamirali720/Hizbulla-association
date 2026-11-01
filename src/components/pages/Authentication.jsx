@@ -1,13 +1,14 @@
 import  { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AxiosInstance } from "../../utils/axiosInstance";
+import { AxiosInstance } from "../../utils/axiosInstance.js";
+import { useAuth } from "../../context/AuthProvider.jsx";
 
 const Authentication = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-    ;
+  const {login} = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",    
@@ -53,12 +54,13 @@ const Authentication = () => {
       if(res.data) {
         localStorage.setItem("token", res.data.token);
         toast.success(res.data.message);
-         console.log("login data sumited");
+         login(res.data.token)
+         navigate('/')
       }
      
     }
 
-    console.log(formData)
+   
   };
 
   const toggleAuth = () => {

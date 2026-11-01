@@ -1,9 +1,15 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider.jsx";
 
-const Navbar = () => {
+const Navbar = () => {  
+  const { token, logout } = useAuth();
+ 
   const [isOpen, setIsOpen] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
+  // const [isLogged] = useState(token ? true : false);
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm ">
@@ -41,9 +47,12 @@ const Navbar = () => {
 
           {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center space-x-3 gap-4">
-            {isLogged ? (
-              <button className="px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition shadow-sm cursor-pointer">
-                <Link to="/dashboard/profile"> প্রোফাইল</Link>
+            {token ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 text-lg font-medium text-gray-700  rounded-lg transition shadow-sm cursor-pointer"
+              >
+                <Link to="/dashboard/profile"> Logout</Link>
               </button>
             ) : (
               <>
@@ -116,7 +125,9 @@ const Navbar = () => {
           </Link>
           <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
             <button className="btn btn-success cursor-pointer">
-              <Link className="text-white" to="/auth">Account</Link>
+              <Link className="text-white" to="/auth">
+                Account
+              </Link>
             </button>
           </div>
         </div>
