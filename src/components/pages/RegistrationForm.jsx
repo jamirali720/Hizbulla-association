@@ -63,14 +63,13 @@ const RegistrationForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await AxiosInstance.post("/auth/signup", data);
-      console.log(res.data)
-      toast.success(res.data.message)
+      const res = await AxiosInstance.post("/auth/signup", data);    
+      toast.success(res.data.message, { position: "bottom-center" });
        reset();
     } catch (error) {
       if (error.response && error.response.data) {
         console.log("Backend Error Message:", error.response.data.message);
-       toast.error(error.response.data.message);
+       toast.error(error.response.data.message, { position: "bottom-center" });
       } else {
         console.log("Something else went wrong:", error.message);
       }

@@ -53,7 +53,7 @@ const Authentication = () => {
       
       if(res.data) {
         localStorage.setItem("token", res.data.token);
-        toast.success(res.data.message);
+        toast.success(res.data.message, { position: "bottom-center" });
          login(res.data.token)
          navigate('/')
       }

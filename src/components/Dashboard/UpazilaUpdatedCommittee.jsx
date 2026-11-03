@@ -30,13 +30,13 @@ const UpazilaUpdatedCommittee = () => {
     try {
       const res = await AxiosInstance.put(`/upazila/${committeeId}`, data);
 
-      toast.success(res.data.message);
+      toast.success(res.data.message, { position: "bottom-center" });
       navigate("/dashboard/committees");
       reset();
     } catch (error) {
       if (error.response && error.response.data) {
         console.log("Backend Error Message:", error.response.data.message);
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message, { position: "bottom-center" });
       } else {
         console.log("Something else went wrong:", error.message);
       }

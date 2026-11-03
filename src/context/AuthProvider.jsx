@@ -35,7 +35,9 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
-    toast.success("You have successfully logged out");
+    toast.success("You have successfully logged out", {
+      position: "bottom-center",
+    });
   };
 
   return (

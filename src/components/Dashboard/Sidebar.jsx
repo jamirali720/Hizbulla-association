@@ -1,5 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
+
+import { FaPeopleGroup } from "react-icons/fa6";
 import {
   SquareDashedKanban,
   LayoutDashboard,
@@ -11,10 +13,19 @@ import { useAuth } from "../../context/AuthProvider";
 
 const menuItems = [
   { name: "Dashboard", link: "", icon: LayoutDashboard },
-  { name: "Registration", link: "registration", icon: BuildingComplexPlus },
-  { name: "Management", link: "management", icon: SquareDashedKanban },
+  {
+    name: "User Registration",
+    link: "user-registration",
+    icon: BuildingComplexPlus,
+  },
+  {
+    name: "User Management",
+    link: "user-management",
+    icon: SquareDashedKanban,
+  },
   { name: "Committees", link: "committees", icon: SquareDashedKanban },
-  { name: "Profile", link: "profile", icon: User },
+  { name: "User Profile", link: "profile", icon: User },
+  { name: "Add Talim", link: "talim", icon: FaPeopleGroup },
 ];
 
 const Sidebar = () => {

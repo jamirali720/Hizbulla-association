@@ -21,6 +21,8 @@ import AddCombinedCommittee from "../components/Dashboard/AddCombinedCommittee";
 import UnionUpdatedCommittee from "../components/Dashboard/UnionUpdatedCommittee";
 import WardUpdatedCommittee from "../components/Dashboard/WardUpdatedCommittee";
 import UpazilaUpdatedCommittee from "../components/Dashboard/UpazilaUpdatedCommittee";
+import UpdateUserRole from "../components/Dashboard/UpdateUserRole";
+import AddTalim from "../components/Dashboard/AddTalim";
 
 export const router = createBrowserRouter([
   {
@@ -46,17 +48,25 @@ export const router = createBrowserRouter([
             element: <DashboardHome />,
           },
           {
-            path: "registration",
+            path: "talim",
+            element: <AddTalim />,
+          },
+          {
+            path: "user-registration",
             element: <RegistrationForm />,
           },
 
           {
-            path: "Management",
+            path: "user-Management",
             element: <ManageUsers />,
           },
           {
             path: "update-user/:userId",
             element: <UpdatedUser />,
+          },
+          {
+            path: "update-role/:userId",
+            element: <UpdateUserRole />,
           },
           {
             path: "update-committee",

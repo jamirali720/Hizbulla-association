@@ -5,8 +5,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { committeeType } from "../../utils/helper";
 import locations from "../../data/bangladeshLocations.json";
-
-
+import { useAuth } from "../../context/AuthProvider";
 
 const CommitteeList = () => {
   const [committees, setCommittees] = useState([]);
@@ -15,7 +14,7 @@ const CommitteeList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [level, setLevel] = useState("upazila");
-
+  const { initialUser } = useAuth();
   const selectedUpazila = locations.find((item) => item.upazilaName);
 
   const unions = selectedUpazila?.unions ?? [];
@@ -34,7 +33,7 @@ const CommitteeList = () => {
           setCommittees(res.data.data);
         }
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message, {position:"bottom-center"});
         console.log(error);
       }
     };
@@ -42,10 +41,12 @@ const CommitteeList = () => {
   }, [level, wardName, unionName]);
 
   const handleDeleteUser = async (id) => {
+    console.log(id)
     const res = await AxiosInstance.delete(`/${level}/${id}`);
     console.log(res);
     if (res.data) {
-      toast.success(res.data.message);
+      toast.success(res.data.message, { position: "bottom-center" });
+      // updated user show
       setCommittees((prevCommittees) =>
         prevCommittees.filter((item) => item._id !== id),
       );
@@ -132,7 +133,7 @@ const CommitteeList = () => {
           {currentUsers.length > 0 ? (
             <table className="table table-striped table-hover table-bordered text-center">
               <thead>
-                <tr>                  
+                <tr>
                   <th>নাম</th>
                   <th>কমিটির পদবী </th>
                   <th>কমিটির পর্যায় </th>
@@ -148,37 +149,64 @@ const CommitteeList = () => {
               </thead>
               <tbody>
                 {currentUsers.length > 0 &&
-                  currentUsers.map((user, index) => (
-                    <tr key={index}>               
-                      <td className="text-success"> {user.user?.fullname} </td>
-                      <td className="text-success"> {user.position} </td>
-                      <td className="text-success"> {user.committeeName} </td>
-                      <td className="text-success"> {user.user?.village} </td>
-                      <td className="text-success"> {user.user?.ward} </td>
-                      <td className="text-success"> {user.user?.union} </td>
-                      <td className="text-success"> {user.user?.upazila} </td>
-                      <td className="text-success"> {user.user?.district} </td>
-                      <td className="text-success"> {user.user?.phone} </td>
-                      <td className="text-success"> {user?.sorting} </td>
+                  currentUsers.map((committee, index) => (
+                    <tr key={index}>
+                      <td className="text-success">
+                        {" "}
+                        {committee.user?.fullname}{" "}
+                      </td>
+                      <td className="text-success"> {committee.position} </td>
+                      <td className="text-success">
+                        {" "}
+                        {committee.committeeName}{" "}
+                      </td>
+                      <td className="text-success">
+                        {" "}
+                        {committee.user?.village}{" "}
+                      </td>
+                      <td className="text-success"> {committee.user?.ward} </td>
+                      <td className="text-success">
+                        {" "}
+                        {committee.user?.union}{" "}
+                      </td>
+                      <td className="text-success">
+                        {" "}
+                        {committee.user?.upazila}{" "}
+                      </td>
+                      <td className="text-success">
+                        {" "}
+                        {committee.user?.district}{" "}
+                      </td>
+                      <td className="text-success">
+                        {" "}
+                        {committee.user?.phone}{" "}
+                      </td>
+                      <td className="text-success"> {committee?.sorting} </td>
                       <td className="text-success md:flex justify-evenly">
-                        <button
-                          type="btn"
-                          className="btn btn-danger  py-2 fw-semibold"
-                          onClick={() => handleDeleteUser(user._id)}
-                        >
-                          Delete
-                        </button>
+                        {initialUser?.role === "admin" ? (
+                          <>
+                            <button
+                              type="btn"
+                              className="btn btn-danger  py-2 fw-semibold"
+                              onClick={() => handleDeleteUser(committee._id)}
+                            >
+                              Delete
+                            </button>
 
-                        <Link
-                          to={`/dashboard/update-committee/${level}/${user._id}`}
-                        >
-                          <button
-                            type="btn"
-                            className="btn btn-primary  py-2 fw-semibold"
-                          >
-                            Edit
-                          </button>
-                        </Link>
+                            <Link
+                              to={`/dashboard/update-committee/${level}/${committee._id}`}
+                            >
+                              <button
+                                type="btn"
+                                className="btn btn-primary  py-2 fw-semibold"
+                              >
+                                Edit
+                              </button>
+                            </Link>
+                          </>
+                        ) : (
+                          <button>Empty</button>
+                        )}
                       </td>
                     </tr>
                   ))}

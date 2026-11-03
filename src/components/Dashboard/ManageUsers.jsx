@@ -4,11 +4,12 @@ import { AxiosInstance } from "./../../utils/axiosInstance";
 import { toast } from "react-toastify";
 
 import { numBang } from "bang-utils";
+import { useAuth } from "../../context/AuthProvider";
 const ManageUsers = () => {
   const [usersList, setUsersList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
- 
+  const { initialUser } = useAuth();
 
   useEffect(() => {
     const refreshList = async () => {
@@ -30,13 +31,11 @@ const ManageUsers = () => {
   const currentUsers = usersList.slice(startIndex, endIndex);
 
   const handleDeleteUser = async (id) => {
-    const res = await AxiosInstance.delete(
-      `/auth/delete-user/${id}`,
-    );
+    const res = await AxiosInstance.delete(`/auth/delete-user/${id}`);
 
     if (res.data) {
-      toast.success(res.data.message);
-      
+      toast.success(res.data.message, { position: "bottom-center" });
+      setUsersList((prev) => prev.filter((item) => item._id !== id));
     }
   };
 
@@ -44,12 +43,12 @@ const ManageUsers = () => {
     <div>
       <main>
         <div className="text-center my-2  md:flex justify-evenly">
-          <h1 style={{ color: "#ba1434", marginTop:"16px" }}>
+          <h1 style={{ color: "#ba1434", marginTop: "16px" }}>
             সর্বমোট{" = "}
             <strong className="text-blue-700 font-bold">
               {numBang(usersList.length)}
             </strong>{" "}
-            জন পীরভাই/মুহিব্বীন আছেন। 
+            জন পীরভাই/মুহিব্বীন আছেন।
           </h1>
         </div>
         <div className="mx-auto p-4 overflow-auto">
@@ -57,7 +56,6 @@ const ManageUsers = () => {
             <table class="table table-striped table-hover table-bordered text-center">
               <thead>
                 <tr>
-                
                   <th>ইউজার আইডি</th>
                   <th>নাম</th>
                   <th>জেলা</th>
@@ -65,14 +63,14 @@ const ManageUsers = () => {
                   <th>ইউনিয়ন</th>
                   <th>ওয়ার্ড</th>
                   <th>গ্রাম</th>
-                  <th>পদবী </th>                 
+                  <th>পদবী </th>
                   <th>মোবাইল নাম্বার </th>
                   <th>সম্পাদন </th>
                 </tr>
               </thead>
               <tbody>
                 {currentUsers.map((user, index) => (
-                  <tr key={index}>                   
+                  <tr key={index}>
                     <td className="text-success"> {user.userId} </td>
                     <td className="text-success"> {user.fullname} </td>
                     <td className="text-success"> {user.district} </td>
@@ -80,33 +78,45 @@ const ManageUsers = () => {
                     <td className="text-success"> {user.union} </td>
                     <td className="text-success"> {user.ward} </td>
                     <td className="text-success"> {user.village} </td>
-                    <td className="text-success"> {user.position} </td>                    
+                    <td className="text-success"> {user.position} </td>
                     <td className="text-success"> {user.phone} </td>
-                    <td className="text-success md:flex justify-evenly">
-                      <button
-                        type="btn"
-                        className="btn btn-danger  py-2 fw-semibold"
-                        onClick={() => handleDeleteUser(user._id)}
-                      >
-                        Delete
-                      </button>
+                    <td className="text-success flex justify-evenly">
+                      {initialUser?.role === "admin" ? (
+                        <>
+                          <button
+                            type="btn"
+                            className="btn btn-danger  py-2 fw-semibold"
+                            onClick={() => handleDeleteUser(user._id)}
+                          >
+                            Delete
+                          </button>
 
-                      <Link to={`/dashboard/update-user/${user._id}`}>
-                        <button
-                          type="btn"
-                          className="btn btn-primary  py-2 fw-semibold"
-                        >
-                          Edit
-                        </button>
-                      </Link>
-                      <Link to={`/dashboard/add-committe/${user._id}`}>
-                        <button
-                          type="btn"
-                          className="btn btn-primary  py-2 fw-semibold"
-                        >
-                          Committee
-                        </button>
-                      </Link>
+                          <Link to={`/dashboard/update-user/${user._id}`}>
+                            <button
+                              type="btn"
+                              className="btn btn-primary  py-2 fw-semibold"
+                            >
+                              Edit
+                            </button>
+                          </Link>
+                          <Link to={`/dashboard/update-role/${user._id}`}>
+                            <button
+                              type="btn"
+                              className="btn btn-primary  py-2 fw-semibold"
+                            >
+                            Role
+                            </button>
+                          </Link>
+                          <Link to={`/dashboard/add-committe/${user._id}`}>
+                            <button
+                              type="btn"
+                              className="btn btn-primary  py-2 fw-semibold"
+                            >
+                              Committee
+                            </button>
+                          </Link>
+                        </>
+                      ) : <button>Empty</button>}
                     </td>
                   </tr>
                 ))}

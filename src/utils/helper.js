@@ -58,3 +58,18 @@ const committeeType = [
 ];
 
 export { committeePosts, unionNames, userRoles,committeeType, wardNumbers,committeeNames, committeeLevels };
+
+
+export const dateFormate = (isoString) => {  
+  const dateObj = new Date(isoString); 
+  const formattedDate = new Intl.DateTimeFormat("bn-BD", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC", 
+  }).format(dateObj);
+
+  return formattedDate;
+};
+
+
