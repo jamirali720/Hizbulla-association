@@ -4,7 +4,7 @@ import { userStatus } from "../../utils/helper";
 import locations from "../../data/bangladeshLocations.json";
 
 import {
-  numBang,  
+  numBang,
   // monthBang,
   // numToBanglaWords,
   // dayBang,
@@ -12,8 +12,7 @@ import {
   // timeBang,
 } from "bang-utils";
 
-
-const Home = () => { 
+const Home = () => {
   const [search, setSearch] = useState("");
   const [upazilaName, setUpazilaName] = useState("তিতাস");
   const [union, setUnion] = useState("");
@@ -24,7 +23,7 @@ const Home = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
- 
+
   useEffect(() => {
     const refreshList = async () => {
       const res = await AxiosInstance.get(
@@ -67,7 +66,7 @@ const Home = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentUsers = usersList.slice(startIndex, endIndex);
 
-  console.log( "check value",  pirvaiMuhibbin)
+  console.log("check value", pirvaiMuhibbin);
 
   const banglaDate = new Date().toLocaleDateString("bn-BD", {
     weekday: "long",
@@ -194,7 +193,7 @@ const Home = () => {
       <div className="mx-auto p-4 overflow-auto">
         <table class="table table-striped table-hover table-bordered text-center">
           <thead>
-            <tr>              
+            <tr>
               <th>ইউজার আইডি</th>
               <th>নাম</th>
               <th>জেলা</th>
@@ -209,7 +208,7 @@ const Home = () => {
           <tbody>
             {currentUsers.length > 0 &&
               currentUsers.map((user, index) => (
-                <tr key={index}>                 
+                <tr key={index}>
                   <td className="text-success"> {user.userId} </td>
                   <td className="text-success"> {user.fullname} </td>
                   <td className="text-success"> {user.district} </td>

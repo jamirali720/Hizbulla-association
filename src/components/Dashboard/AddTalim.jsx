@@ -185,7 +185,7 @@ const AddTalim = () => {
                 {/* date picker */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    মসজিদ বা মহল্লার নাম
+                    তা’লিমের তারিখ
                   </label>
                   <input
                     type="date"

@@ -83,7 +83,7 @@ const UpdatedUser = () => {
       );
       
       toast.success(res.data.message, { position: "bottom-center" });
-      navigate("/dashboard/management");
+      navigate("/dashboard/user-management");
       reset();
     } catch (error) {
       if (error.response && error.response.data) {
