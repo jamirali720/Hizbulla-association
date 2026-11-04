@@ -3,12 +3,12 @@ import { useState } from "react";
 import { AxiosInstance } from "./../../utils/axiosInstance";
 import { dateFormate } from "../../utils/helper";
 import { toast } from "react-toastify";
-import {useAuth} from "../../context/AuthProvider.jsx"
+import { useAuth } from "../../context/AuthProvider.jsx";
+
 const DashboardHome = () => {
   const [talims, setTalims] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {initialUser} = useAuth();
-
+  const { initialUser } = useAuth();
 
   useEffect(() => {
     const fetchedTalims = async () => {
@@ -38,12 +38,22 @@ const DashboardHome = () => {
     fetchedTalims();
   }, []);
 
-  const currentDate = new Date().toISOString();
+  const currentMonthBangla = new Date().toLocaleDateString("bn-BD", {
+    year: "numeric",
+    month: "long",
+  });
+
+  const currentMonth = new Date().getMonth() +1;
 
   const activeTalims = talims.filter((item) => {
-    const itemDate = new Date(item.date).toISOString();
-    return currentDate <= itemDate;
+    const itemMonth = new Date(item.date).getMonth() + 1;
+    console.log("fun", itemMonth)
+    return currentMonth === itemMonth;
   });
+  // const activeTalims = talims.filter((item) => {
+  //   const itemDate = new Date(item.date).toISOString();
+  //   return currentDate <= itemDate;
+  // });
 
   const todayStr = new Date().toDateString();
 
@@ -51,6 +61,14 @@ const DashboardHome = () => {
     const itemDateStr = new Date(item.date).toDateString();
     return todayStr === itemDateStr;
   });
+
+  const banglaDate = new Date().toLocaleDateString("bn-BD", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  
 
   const handleDeleteTalim = async (id) => {
     try {
@@ -60,120 +78,143 @@ const DashboardHome = () => {
       }
       setTalims((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
-       toast.success(err.response.data.message, { position: "bottom-center" });
+      toast.success(err.response.data.message, { position: "bottom-center" });
     }
   };
 
-  
   return (
-    <main>
-      <section>
-        <header className="text-center py-2">
-          {" "}
-          <h1> আজকের তা’লিমের মাহফিল গুলোর অবস্থান</h1>
-        </header>
-        <main>
-          <div className="md:flex justify-evenly items-center flex-wrap gap-4">
-            {todaysTalims.map((talim, index) => (
-              <div key={index} className="card">
-                <div className="card-header">
-                  <b>
-                    <strong> কুমিল্লা জেলার- {talim.upazila}</strong>
-                  </b>
-                </div>
-                <div className="card-body">
-                  <p className="card-text">ইউনিয়নঃ- {talim.union} </p>
-                  <p className="card-text">
-                    ওয়ার্ড নং- {talim.ward?.split("-")[1]}{" "}
-                  </p>
-                  <p className="card-text">গ্রামের নামঃ- {talim.village} </p>
-                  <p className="card-text"> আয়োজকের মোবাইলঃ- {talim.phone} </p>
-                  <p className="card-text">
-                    মসজিদের/মহল্লার নামঃ- {talim.masjid}{" "}
-                  </p>
-                  {initialUser?.role === "admin" && (
-                    <button
-                      onClick={() => handleDeleteTalim(talim._id)}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  )}
-                </div>
-                <div className="card-footer">
-                  তারিখঃ- {dateFormate(talim.date)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </main>
-      </section>
-
-      <div>
-        <hr />
-      </div>
-      <section>
-        <header className="text-center">
-          <h1 className="">সারা মাসের তা’লিমের সময় সূচী </h1>
-          <hr />
-        </header>
-        {loading ? (
-          <div className="max-w-screen h-screen flex justify-center items-center">
-            <div className="spinner-border text-success"></div>
-          </div>
-        ) : (
-          <div className="p-2">
-            {activeTalims?.length > 0 ? (
-              <div className="md:flex justify-evenly items-center flex-wrap gap-4">
-                {activeTalims.map((talim, index) => (
-                  <div key={index} className="card">
-                    <div className="card-header">
-                      <b>
-                        <strong> কুমিল্লা জেলার- {talim.upazila}</strong>
-                      </b>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-sm-6 col-md-6 bg-amber-100">
+          <section>
+            {todaysTalims.length > 0 ? (
+              <main>
+                <header className="text-center py-4 my-2 bg-green-400">
+                  <h2> {banglaDate} </h2>
+                  <h1> আজকের তা’লিমের মাহফিল</h1>
+                  <hr />
+                </header>
+                <div className="md:flex justify-evenly items-center flex-wrap gap-4 ">
+                  {todaysTalims.map((talim, index) => (
+                    <div key={index} className="card">
+                      <div className="card-header">
+                        <b>
+                          <strong> কুমিল্লা জেলার- {talim.upazila}</strong>
+                        </b>
+                      </div>
+                      <div className="card-body">
+                        <p className="card-text">
+                          <strong>ইউনিয়নঃ-</strong> {talim.union}
+                        </p>
+                        <p className="card-text">
+                          <strong>ওয়ার্ড নং- </strong>
+                          {talim.ward?.split("-")[1]}
+                        </p>
+                        <p className="card-text">
+                          <strong> গ্রামের নামঃ-</strong> {talim.village}
+                        </p>
+                        <p className="card-text">
+                          <strong> মসজিদের/মহল্লার নামঃ-</strong>
+                          {talim.masjid}
+                        </p>
+                        <p className="card-text">
+                          <strong> আয়োজকের মোবাইলঃ-</strong> {talim.phone}
+                        </p>
+                        {initialUser?.role === "admin" && (
+                          <button
+                            onClick={() => handleDeleteTalim(talim._id)}
+                            className="btn btn-danger"
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </div>
+                      <div className="card-footer">
+                        <strong> তারিখঃ- </strong> {dateFormate(talim.date)}
+                      </div>
                     </div>
-                    <div className="card-body">
-                      <p className="card-text">
-                        <strong>ইউনিয়নঃ-</strong> {talim.union}
-                      </p>
-                      <p className="card-text">
-                        <strong>ওয়ার্ড নং- </strong>{" "}
-                        {talim.ward?.split("-")[1]}{" "}
-                      </p>
-                      <p className="card-text">
-                        <strong> গ্রামের নামঃ-</strong> {talim.village}{" "}
-                      </p>
-                      <p className="card-text">
-                        <strong> আয়োজকের মোবাইলঃ-</strong> {talim.phone}{" "}
-                      </p>
-                      <p className="card-text">
-                        <strong> মসজিদের/মহল্লার নামঃ-</strong>{" "}
-                        {talim.masjid}{" "}
-                      </p>
-                      {initialUser?.role === "admin" && (
-                        <button
-                          onClick={() => handleDeleteTalim(talim._id)}
-                          className="btn btn-danger"
-                        >
-                          Delete
-                        </button>
-                      )}
-                    </div>
-                    <div className="card-footer">
-                      <strong> তারিখঃ- </strong> {dateFormate(talim.date)}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </main>
             ) : (
-              <div className=" md:w-full md:h-screen flex justify-center items-center">
-                <h1 className="text-center"> তা’লিমের কোন তথ্য পাওয়া যায়নি</h1>
+              <div className=" md:w-full flex justify-center items-center">
+                <h1 className="text-center">আজকে কোথায়ও তা’লিম নেই</h1>
               </div>
             )}
+          </section>
+        </div>
+
+        <div className="col-sm-6 col-md-6 bg-amber-300">
+          <div className="row">
+            <section>
+              <header className="text-center py-4 my-2 bg-green-400">
+                <h2>{currentMonthBangla}</h2>
+                <h1 className=""> মাসের তা’লিমের সময়সূচী </h1>
+                <hr />
+              </header>
+              {loading ? (
+                <div className="max-w-screen h-screen flex justify-center items-center">
+                  <div className="spinner-border text-success"></div>
+                </div>
+              ) : (
+                <div className="p-2 md:flex justify-evenly items-center">
+                  {activeTalims?.length > 0 ? (
+                    <div className="">
+                      {activeTalims.map((talim, index) => (
+                        <div key={index} className="card">
+                          <div className="card-header">
+                            <b>
+                              <strong> কুমিল্লা জেলার- {talim.upazila}</strong>
+                            </b>
+                          </div>
+                          <div className="card-body">
+                            <p className="card-text">
+                              <strong>ইউনিয়নঃ-</strong> {talim.union}
+                            </p>
+                            <p className="card-text">
+                              <strong>ওয়ার্ড নং- </strong>
+                              {talim.ward?.split("-")[1]}
+                            </p>
+                            <p className="card-text">
+                              <strong> গ্রামের নামঃ-</strong> {talim.village}
+                            </p>
+                            <p className="card-text">
+                              <strong> মসজিদের/মহল্লার নামঃ-</strong>
+                              {talim.masjid}
+                            </p>
+                            <p className="card-text">
+                              <strong> আয়োজকের মোবাইলঃ-</strong>
+                              {talim.phone}
+                            </p>
+                            {initialUser?.role === "admin" && (
+                              <button
+                                onClick={() => handleDeleteTalim(talim._id)}
+                                className="btn btn-danger"
+                              >
+                                Delete
+                              </button>
+                            )}
+                          </div>
+                          <div className="card-footer">
+                            <strong> তারিখঃ- </strong> {dateFormate(talim.date)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className=" md:w-full md:h-screen flex justify-center items-center">
+                      <h1 className="text-center">
+                        তা’লিমের কোন তথ্য পাওয়া যায়নি
+                      </h1>
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
           </div>
-        )}
-      </section>
-    </main>
+        </div>
+      </div>
+    </div>
   );
 };
 

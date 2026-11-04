@@ -5,11 +5,9 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import {
   SquareDashedKanban,
   LayoutDashboard,
-  User,
   BuildingComplexPlus,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthProvider";
-
 
 const menuItems = [
   { name: "Dashboard", link: "", icon: LayoutDashboard },
@@ -24,18 +22,18 @@ const menuItems = [
     icon: SquareDashedKanban,
   },
   { name: "Committees", link: "committees", icon: SquareDashedKanban },
-  { name: "User Profile", link: "profile", icon: User },
+  { name: "All Talims", link: "all-talims", icon: FaPeopleGroup },
   { name: "Add Talim", link: "talim", icon: FaPeopleGroup },
 ];
 
 const Sidebar = () => {
-const { logout } = useAuth();
- 
-const navigate = useNavigate();
-  const handleLogout =() => {
+  const { logout } = useAuth();
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
     logout();
-    navigate("/")
-  }
+    navigate("/");
+  };
   return (
     <aside className="w-full min-h-screen bg-gray-800 text-white p-5">
       <h2 className="text-2xl font-bold mb-8">Dashboard</h2>
@@ -60,8 +58,9 @@ const navigate = useNavigate();
           );
         })}
 
-        <button className="flex justify-center items-center gap-3 cursor-pointer px-3"
-        onClick={handleLogout}
+        <button
+          className="flex justify-center items-center gap-3 cursor-pointer px-3"
+          onClick={handleLogout}
         >
           <span>
             <FiLogOut />

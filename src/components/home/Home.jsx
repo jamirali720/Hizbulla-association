@@ -66,8 +66,6 @@ const Home = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentUsers = usersList.slice(startIndex, endIndex);
 
-  console.log("check value", pirvaiMuhibbin);
-
   const banglaDate = new Date().toLocaleDateString("bn-BD", {
     weekday: "long",
     year: "numeric",
@@ -83,7 +81,7 @@ const Home = () => {
           সর্বমোট{" = "}
           <strong className="text-blue-700 font-bold">
             {numBang(usersList.length)}
-          </strong>{" "}
+          </strong>
           জন
         </h1>
       </div>

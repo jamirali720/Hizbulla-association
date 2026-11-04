@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider.jsx";
-
+const img =
+  "https://yt3.googleusercontent.com/mM2GJyP8yVHPf0UjG1I3oG8w8zobOy8-ee8AruuKjcdzagCWwnePNc7LNW9c0SpddNaq58LPMw=s900-c-k-c0x00ffffff-no-rj";
 
 const Navbar = () => {
   const { token, logout } = useAuth();
@@ -22,7 +23,7 @@ const Navbar = () => {
               className="text-xl font-bold text-blue-600 flex items-center gap-2"
             >
               <img
-                src="../../public/minar.png"
+                src={img}
                 alt="minar"
                 className="h-10 w-10"
               />
@@ -38,10 +39,10 @@ const Navbar = () => {
             <Link to="/dashboard" className="hover:text-blue-600 transition">
               Dashboard
             </Link>
-            <Link to="/services" className="hover:text-blue-600 transition">
+            <Link to="#" className="hover:text-blue-600 transition">
               Services
             </Link>
-            <Link to="/contact" className="hover:text-blue-600 transition">
+            <Link to="#" className="hover:text-blue-600 transition">
               Contact
             </Link>
           </div>

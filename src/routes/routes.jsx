@@ -6,9 +6,6 @@ import NotFound from "../components/pages/NotFound";
 import Dashboard from "../components/Dashboard/Dashboard";
 
 import Authentication from "../components/pages/Authentication";
-
-import Profile from "../components/pages/Profile";
-
 import DashboardHome from "../components/Dashboard/DashboardHome";
 import RegistrationForm from "../components/pages/RegistrationForm";
 
@@ -23,6 +20,7 @@ import WardUpdatedCommittee from "../components/Dashboard/WardUpdatedCommittee";
 import UpazilaUpdatedCommittee from "../components/Dashboard/UpazilaUpdatedCommittee";
 import UpdateUserRole from "../components/Dashboard/UpdateUserRole";
 import AddTalim from "../components/Dashboard/AddTalim";
+import AllTalimsDisplayed from "../components/Dashboard/AllTalimsDisplayed";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +48,10 @@ export const router = createBrowserRouter([
           {
             path: "talim",
             element: <AddTalim />,
+          },
+          {
+            path: "all-talims",
+            element: <AllTalimsDisplayed />,
           },
           {
             path: "user-registration",
@@ -86,15 +88,6 @@ export const router = createBrowserRouter([
               },
             ],
           },
-
-          {
-            path: "profile",
-            element: <Profile />,
-          },
-          // {
-          //   path: "order/:orderId",
-          //   element: <UpdateOrder />,
-          // },
           {
             path: "add-committe/:committeeId",
             element: <AddCombinedCommittee />,
@@ -103,15 +96,6 @@ export const router = createBrowserRouter([
             path: "committees",
             element: <CommitteeList />,
           },
-
-          // {
-          //   path: "all-teams",
-          //   element: <AllTeamMember />,
-          // },
-          // {
-          //   path: "update-team/:teamId",
-          //   element: <UpdateTeam />,
-          // },
         ],
       },
       {
