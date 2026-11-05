@@ -19,9 +19,28 @@ const DashboardHome = () => {
         const allTalims = res.data.data;
         setTalims(allTalims);
         setLoading(false);
-        const currentDate = new Date().toISOString();
+
+        // automatically expired talims will be deleted after midnight
+        const now = new Date();
+
+        // 2. Create a reference point for Today at Midnight (00:00:00.000)
+        const todayMidnight = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+        );
         allTalims.forEach(async (talim) => {
-          if (new Date(talim.date) < currentDate) {
+          const talimDate = new Date(talim.date);
+
+          // Normalize the Talim date to Midnight of that day as well for fair comparison
+          const talimMidnight = new Date(
+            talimDate.getFullYear(),
+            talimDate.getMonth(),
+            talimDate.getDate(),
+          );
+
+          // 3. If talimMidnight is strictly LESS than todayMidnight, it means the day has completely passed
+          if (talimMidnight < todayMidnight) {
             try {
               await AxiosInstance.delete(`/talim/${talim._id}`);
               setTalims((prev) =>
@@ -43,11 +62,10 @@ const DashboardHome = () => {
     month: "long",
   });
 
-  const currentMonth = new Date().getMonth() +1;
+  const currentMonth = new Date().getMonth() + 1;
 
   const activeTalims = talims.filter((item) => {
     const itemMonth = new Date(item.date).getMonth() + 1;
-    console.log("fun", itemMonth)
     return currentMonth === itemMonth;
   });
   // const activeTalims = talims.filter((item) => {
@@ -68,7 +86,6 @@ const DashboardHome = () => {
     month: "long",
     day: "numeric",
   });
-  
 
   const handleDeleteTalim = async (id) => {
     try {
@@ -118,7 +135,7 @@ const DashboardHome = () => {
                           {talim.masjid}
                         </p>
                         <p className="card-text">
-                          <strong> আয়োজকের মোবাইলঃ-</strong> {talim.phone}
+                          <strong> আয়োজকের মোবাইলঃ- </strong> {talim.phone}
                         </p>
                         {initialUser?.role === "admin" && (
                           <button
@@ -183,7 +200,7 @@ const DashboardHome = () => {
                               {talim.masjid}
                             </p>
                             <p className="card-text">
-                              <strong> আয়োজকের মোবাইলঃ-</strong>
+                              <strong> আয়োজকের মোবাইলঃ-  </strong>
                               {talim.phone}
                             </p>
                             {initialUser?.role === "admin" && (

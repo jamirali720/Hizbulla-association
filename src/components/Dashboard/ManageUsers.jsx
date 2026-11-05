@@ -72,7 +72,7 @@ const ManageUsers = () => {
                 {currentUsers.map((user, index) => (
                   <tr key={index}>
                     <td className="text-success"> {user.userId} </td>
-                    <td className="text-success"> {user.fullname} </td>
+                    <td className="text-success"> {user.name} </td>
                     <td className="text-success"> {user.district} </td>
                     <td className="text-success"> {user.upazila} </td>
                     <td className="text-success"> {user.union} </td>

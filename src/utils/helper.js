@@ -1,5 +1,8 @@
 const userRoles = ["অ্যাডমিন", "ইউজার"];
-export const userStatus = ["মুরীদ", "মুহিব্বীন"];
+export const userStatus = [
+  { value: "মুরীদ", name: "একজন মুরীদ" },
+  { value: "মুহিব্বীন", name: "একজন মুহিব্বীন" },
+];
 const committeePosts = [
   "সভাপতি",
   "সহ-সভাপতি",
@@ -36,9 +39,7 @@ const unionNames = [
   "মজিদপুর",
 ];
 
-
-
- const wardNumbers = [
+const wardNumbers = [
   "ওয়ার্ড-এক",
   "ওয়ার্ড-দুই",
   "ওয়ার্ড-তিন",
@@ -57,19 +58,24 @@ const committeeType = [
   { id: "ward", name: "ওয়ার্ড কমিটি" },
 ];
 
-export { committeePosts, unionNames, userRoles,committeeType, wardNumbers,committeeNames, committeeLevels };
+export {
+  committeePosts,
+  unionNames,
+  userRoles,
+  committeeType,
+  wardNumbers,
+  committeeNames,
+  committeeLevels,
+};
 
-
-export const dateFormate = (isoString) => {  
-  const dateObj = new Date(isoString); 
+export const dateFormate = (isoString) => {
+  const dateObj = new Date(isoString);
   const formattedDate = new Intl.DateTimeFormat("bn-BD", {
     year: "numeric",
     month: "long",
     day: "numeric",
-    timeZone: "UTC", 
+    timeZone: "UTC",
   }).format(dateObj);
 
   return formattedDate;
 };
-
-

@@ -91,23 +91,7 @@ const UpazilaUpdatedCommittee = () => {
                     </option>
                   </select>
                 </div>
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">
-                    এ্যাকটিভ কিনা
-                  </label>
-
-                  <select className="form-select" {...register("isActive")}>
-                    <option value="">সক্রিয়তা নির্বাচন করুন</option>
-
-                    <option key="" value="true">
-                      Active
-                    </option>
-                    <option key="" value="false">
-                      InActive
-                    </option>
-                  </select>
-                </div>
-
+                
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
                     ক্রমধারা/সিরিয়াল

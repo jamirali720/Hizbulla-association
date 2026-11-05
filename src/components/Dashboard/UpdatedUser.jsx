@@ -274,8 +274,8 @@ const UpdatedUser = () => {
                     <option value="">আপনার অবস্থা নির্বাচন করুন</option>
 
                     {userStatus.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
+                      <option key={index} value={item.value}>
+                        {item.name}
                       </option>
                     ))}
                   </select>

@@ -10,8 +10,6 @@ const AllTalimsDisplayed = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const { initialUser } = useAuth();
 
- 
-
   useEffect(() => {
     const getAllTalims = async () => {
       try {
@@ -78,10 +76,10 @@ const AllTalimsDisplayed = () => {
                   currentTalims.map((talim, index) => (
                     <tr key={index}>
                       <td className="text-success"> {talim.upazila} </td>
-                      <td className="text-success">{talim.union}</td>
-                      <td className="text-success">{talim.ward}</td>
-                      <td className="text-success">{talim.village}</td>
-                      <td className="text-success">{talim.masjid}</td>
+                      <td className="text-success"> {talim.union}</td>
+                      <td className="text-success"> {talim.ward}</td>
+                      <td className="text-success"> {talim.village}</td>
+                      <td className="text-success"> {talim.masjid}</td>
                       <td className="text-success">
                         {dateFormate(talim.date)}
                       </td>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import locations from "../../data/bangladeshLocations.json";
 import { AxiosInstance } from "./../../utils/axiosInstance";
@@ -6,7 +5,7 @@ import { toast } from 'react-toastify';
 import { userStatus } from "../../utils/helper";
 
 const RegistrationForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -18,7 +17,7 @@ const RegistrationForm = () => {
   } = useForm({
     mode: "onTouched",
     defaultValues: {
-      upazilaName: "",
+      upazila: "",
       union: "",
       ward: "",
       village: "",
@@ -26,13 +25,13 @@ const RegistrationForm = () => {
   });
 
   // Watch selected values
-  const upazilaName = watch("upazilaName");
+  const upazila = watch("upazila");
   const union = watch("union");
   const ward = watch("ward");
 
   // Get dependent data
   const selectedUpazila = locations.find(
-    (item) => item.upazilaName === upazilaName,
+    (item) => item.upazila === upazila,
   );
 
   const unions = selectedUpazila?.unions ?? [];
@@ -96,9 +95,9 @@ const RegistrationForm = () => {
                   <label className="form-label fw-semibold">আপনার নাম</label>
                   <input
                     type="text"
-                    className={`form-control ${errors.fullname ? "is-invalid" : ""}`}
+                    className={`form-control ${errors.name ? "is-invalid" : ""}`}
                     placeholder="আপনার নাম লিখুন"
-                    {...register("fullname", {
+                    {...register("name", {
                       required: "আপনার নাম অবশ্যই দিতে হবে",
                       minLength: {
                         value: 3,
@@ -106,9 +105,9 @@ const RegistrationForm = () => {
                       },
                     })}
                   />
-                  {errors.fullname && (
+                  {errors.name && (
                     <div className="invalid-feedback">
-                      {errors.fullname.message}
+                      {errors.name.message}
                     </div>
                   )}
                 </div>
@@ -143,7 +142,7 @@ const RegistrationForm = () => {
 
                   <select
                     className="form-select"
-                    {...register("upazilaName", {
+                    {...register("upazila", {
                       required: "আপনার উপজেলা নির্বাচন করতে হবে",
                       onChange: handleUpazilaChange,
                     })}
@@ -151,8 +150,8 @@ const RegistrationForm = () => {
                     <option value="">উপজেলা নির্বাচন করুন</option>
 
                     {locations.map((item) => (
-                      <option key={item.id} value={item.upazilaName}>
-                        {item.upazilaName}
+                      <option key={item.id} value={item.upazila}>
+                        {item.upazila}
                       </option>
                     ))}
                   </select>
@@ -170,7 +169,7 @@ const RegistrationForm = () => {
 
                   <select
                     className="form-select"
-                    disabled={!upazilaName}
+                    disabled={!upazila}
                     {...register("union", {
                       required: "আপনার ইউনিয়ন নির্বাচন করতে হবে",
                       onChange: handleUnionChange,
@@ -286,8 +285,8 @@ const RegistrationForm = () => {
                     <option value="">আপনার অবস্থা নির্বাচন করুন</option>
 
                     {userStatus.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
+                      <option key={index} value={item.value}>
+                        {item.name}
                       </option>
                     ))}
                   </select>
@@ -300,7 +299,7 @@ const RegistrationForm = () => {
                 </div>
 
                 {/* Password */}
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label className="form-label fw-semibold">Password</label>
                   <div className="flex justify-around">
                     <input
@@ -328,7 +327,7 @@ const RegistrationForm = () => {
                       {errors.password.message}
                     </div>
                   )}
-                </div>
+                </div> */}
 
                 {/* Confirm Password
                 <div className="mb-3">

@@ -153,12 +153,12 @@ const CommitteeList = () => {
                     <tr key={index}>
                       <td className="text-success">
                         {" "}
-                        {committee.user?.fullname}{" "}
+                        {committee.user?.name}{" "}
                       </td>
                       <td className="text-success"> {committee.position} </td>
                       <td className="text-success">
                         {" "}
-                        {committee.committeeName}{" "}
+                        {committee.committee}{" "}
                       </td>
                       <td className="text-success">
                         {" "}

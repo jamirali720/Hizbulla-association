@@ -72,7 +72,7 @@ const WardUpdatedCommittee = () => {
                 </div>
 
                 {/* status */}
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label className="form-label fw-semibold">
                     স্ট্যাটাস নির্বাচন
                   </label>
@@ -87,7 +87,7 @@ const WardUpdatedCommittee = () => {
                       ইনএ্যাকটিভ
                     </option>
                   </select>
-                </div>
+                </div> */}
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold">

@@ -14,7 +14,7 @@ import {
 
 const Home = () => {
   const [search, setSearch] = useState("");
-  const [upazilaName, setUpazilaName] = useState("তিতাস");
+  const [upazila, setUpazila] = useState("তিতাস");
   const [union, setUnion] = useState("");
   const [ward, setWard] = useState("");
   const [village, setVillage] = useState("");
@@ -38,7 +38,7 @@ const Home = () => {
 
   // Get dependent data
   const selectedUpazila = locations.find(
-    (item) => item.upazilaName === upazilaName,
+    (item) => item.upazila === upazila,
   );
 
   const unions = selectedUpazila?.unions ?? [];
@@ -101,14 +101,14 @@ const Home = () => {
             {" "}
             <select
               className="form-select h-full"
-              defaultValue={upazilaName}
-              onChange={(e) => setUpazilaName(e.target.value)}
+              defaultValue={upazila}
+              onChange={(e) => setUpazila(e.target.value)}
             >
               {/* <option value="তিতাস">উপজেলা নির্বাচন করুন</option> */}
 
               {locations.map((item) => (
-                <option key={item.upazilaId} value={item.upazilaName}>
-                  {item.upazilaName}
+                <option key={item.upazilaId} value={item.upazila}>
+                  {item.upazila}
                 </option>
               ))}
             </select>
@@ -172,8 +172,8 @@ const Home = () => {
               <option value="All">সকল</option>
 
               {userStatus.map((item) => (
-                <option key={item} value={item}>
-                  {item}
+                <option key={item} value={item.value}>
+                  {item.name}
                 </option>
               ))}
             </select>
@@ -208,7 +208,7 @@ const Home = () => {
               currentUsers.map((user, index) => (
                 <tr key={index}>
                   <td className="text-success"> {user.userId} </td>
-                  <td className="text-success"> {user.fullname} </td>
+                  <td className="text-success"> {user.name} </td>
                   <td className="text-success"> {user.district} </td>
                   <td className="text-success"> {user.upazila} </td>
                   <td className="text-success"> {user.union} </td>

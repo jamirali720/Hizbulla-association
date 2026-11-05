@@ -71,24 +71,6 @@ const UnionUpdatedCommittee = () => {
                   </select>
                 </div>
 
-                {/* Union */}
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">
-                    স্ট্যাটাস নির্বাচন
-                  </label>
-
-                  <select className="form-select" {...register("status")}>
-                    <option value="">স্ট্যাটাস নির্বাচন করুন</option>
-
-                    <option key="" value="active">
-                      Active
-                    </option>
-                    <option key="" value="inActive">
-                      InActive
-                    </option>
-                  </select>
-                </div>
-
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
                     ক্রমধারা/সিরিয়াল

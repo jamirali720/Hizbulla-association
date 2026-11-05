@@ -41,7 +41,7 @@ const AddCombinedCommittee = () => {
 
   // ২. 'committeeType' ড্রপডাউনের ভ্যালু রিয়েল-টাইমে ট্র্যাক করার জন্য watch() ব্যবহার করুন
   const selectedCommittee = watch("committeeType");
-  const committeeName =
+  const committee =
     selectedCommittee === "upazila"
       ? "তিতাস উপজেলা কমিটি"
       : selectedCommittee === "union"
@@ -61,15 +61,15 @@ const AddCombinedCommittee = () => {
   const onSubmit = async (data) => {
     const upazilaData = new FormData();
     upazilaData.append("upazilaId", "titas");
-    upazilaData.append("upazilaName", "তিতাস");
-    upazilaData.append("committeeName", committeeName);
+    upazilaData.append("upazila", "তিতাস");
+    upazilaData.append("committee", committee);
     upazilaData.append("position", data.position);
     upazilaData.append("user", committeeId);
 
     const unionData = new FormData();
     unionData.append("unionId", unionId);
-    unionData.append("unionName", data.union);
-    unionData.append("committeeName", `${data.union} ${committeeName}`);
+    unionData.append("union", data.union);
+    unionData.append("committee", `${data.union} ${committee}`);
     unionData.append("position", data.position);
     unionData.append("user", committeeId);
     unionData.append("upazilaId", "titas");
@@ -77,11 +77,11 @@ const AddCombinedCommittee = () => {
     const wardData = new FormData();
     wardData.append("unionId", unionId);
     wardData.append("wardId", wardId);
-    wardData.append("wardName", data.ward);
+    wardData.append("ward", data.ward);
 
     wardData.append(
-      "committeeName",
-      `${data.ward?.split("-")[1]} ${committeeName}`,
+      "committee",
+      `${data.ward?.split("-")[1]} ${committee}`,
     );
     wardData.append("position", data.position);
     wardData.append("user", committeeId);
@@ -197,14 +197,14 @@ const AddCombinedCommittee = () => {
                   কমিটির নাম নির্বাচন
                 </label>
 
-                <select className="form-select" {...register("committeeName")}>
+                <select className="form-select" {...register("committee")}>
                   <option value="">কমিটির নাম নির্বাচন করুন</option>
                   <option value="তিতাস উপজেলা কমিটি">তিতাস উপজেলা কমিটি</option>
                 </select>
 
-                {errors.committeeName && (
+                {errors.committee && (
                   <small className="text-danger">
-                    {errors.committeeName.message}
+                    {errors.committee.message}
                   </small>
                 )}
               </div>
