@@ -15,11 +15,11 @@ const CommitteeList = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [level, setLevel] = useState("upazila");
   const { initialUser } = useAuth();
-  const selectedUpazila = locations.find((item) => item.upazilaName);
+  const selectedUpazila = locations.find((item) => item.upazila);
 
   const unions = selectedUpazila?.unions ?? [];
 
-  const selectedUnion = unions.find((item) => item.name);
+  const selectedUnion = unions.find((item) => item.id === unionName);
 
   const wards = selectedUnion?.wards ?? [];
 
@@ -33,7 +33,7 @@ const CommitteeList = () => {
           setCommittees(res.data.data);
         }
       } catch (error) {
-        toast.error(error.response.data.message, {position:"bottom-center"});
+        toast.error(error.response.data.message, { position: "bottom-center" });
         console.log(error);
       }
     };
@@ -41,7 +41,7 @@ const CommitteeList = () => {
   }, [level, wardName, unionName]);
 
   const handleDeleteUser = async (id) => {
-    console.log(id)
+    console.log(id);
     const res = await AxiosInstance.delete(`/${level}/${id}`);
     console.log(res);
     if (res.data) {
@@ -63,7 +63,7 @@ const CommitteeList = () => {
     <div>
       <main>
         <div className="text-center my-2 md:flex justify-evenly items-center ">
-          <div className="w-3/4">
+          <div className="md:w-1/3">
             <h3 style={{ color: "#ba1434", marginTop: "16px" }}>
               সর্বমোট{" = "}
               <strong className="text-blue-700 font-bold">
@@ -72,25 +72,24 @@ const CommitteeList = () => {
               জন কমিটি সদস্য আছে।
             </h3>
           </div>
-          <div className="w-1/4">
-            <select
-              style={{ minWidth: "360px" }}
-              className="form-select my-2 text-center"
-              value={level}
-              onChange={(e) => setLevel(e.target.value)}
-            >
-              {committeeType.map((item) => (
-                <option value={item.id} key={item.id}>
-                  {item.name}{" "}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
+          <section className="md:flex justify-center items-center gap-3">
+            <div className="">
+              <select
+                className="form-select my-2 text-center"
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+              >
+                {committeeType.map((item) => (
+                  <option value={item.id} key={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {level === "union" && (
-              <div className="w-1/4">
+              <div className="">
                 <select
-                  style={{ minWidth: "360px" }}
                   className="form-select my-2 text-center"
                   value={unionName}
                   onChange={(e) => {
@@ -99,35 +98,52 @@ const CommitteeList = () => {
                 >
                   <option value="">ইউনিয়ন নির্বাচন করুন</option>
                   {unions.map((item) => (
-                    <option value={item.name} key={item.id}>
+                    <option value={item.id} key={item.id}>
                       {item.name}{" "}
                     </option>
                   ))}
                 </select>
               </div>
             )}
-          </div>
-          <div>
+
             {level === "ward" && (
-              <div className="w-1/4">
-                <select
-                  style={{ minWidth: "360px" }}
-                  className="form-select my-2 text-center"
-                  value={wardName}
-                  onChange={(e) => {
-                    setWardName(e.target.value);
-                  }}
-                >
-                  <option value="">ওয়ার্ড নির্বাচন করুন</option>
-                  {wards.map((item) => (
-                    <option value={item.name} key={item.id}>
-                      {item.name}{" "}
-                    </option>
-                  ))}
-                </select>
+              <div className="md:flex justify-center items-center gap-4">
+                <div className="">
+                  <select
+                    className="form-select my-2 text-center"
+                    value={unionName}
+                    onChange={(e) => {
+                      setUnionName(e.target.value);
+                    }}
+                  >
+                    <option value="">ইউনিয়ন নির্বাচন করুন</option>
+                    {unions.map((item) => (
+                      <option value={item.id} key={item.id}>
+                        {item.name}{" "}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="">
+                  <select
+                    className="form-select my-2 text-center"
+                    value={wardName}
+                    disabled={!unionName}
+                    onChange={(e) => {
+                      setWardName(e.target.value);
+                    }}
+                  >
+                    <option value="">ওয়ার্ড নির্বাচন করুন</option>
+                    {wards.map((item) => (
+                      <option value={item.id} key={item.id}>
+                        {item.name}{" "}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             )}
-          </div>
+          </section>
         </div>
         <div className="mx-auto p-4 overflow-auto">
           {currentUsers.length > 0 ? (
@@ -151,15 +167,9 @@ const CommitteeList = () => {
                 {currentUsers.length > 0 &&
                   currentUsers.map((committee, index) => (
                     <tr key={index}>
-                      <td className="text-success">
-                        {" "}
-                        {committee.user?.name}{" "}
-                      </td>
+                      <td className="text-success"> {committee.user?.name} </td>
                       <td className="text-success"> {committee.position} </td>
-                      <td className="text-success">
-                        {" "}
-                        {committee.committee}{" "}
-                      </td>
+                      <td className="text-success"> {committee.committee} </td>
                       <td className="text-success">
                         {" "}
                         {committee.user?.village}{" "}

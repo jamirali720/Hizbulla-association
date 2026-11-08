@@ -42,7 +42,7 @@ const DashboardHome = () => {
           // 3. If talimMidnight is strictly LESS than todayMidnight, it means the day has completely passed
           if (talimMidnight < todayMidnight) {
             try {
-              await AxiosInstance.delete(`/talim/${talim._id}`);
+              await AxiosInstance.delete(`/talim/auto-delete/${talim._id}`);
               setTalims((prev) =>
                 prev.filter((item) => item._id !== talim._id),
               );
@@ -155,7 +155,10 @@ const DashboardHome = () => {
               </main>
             ) : (
               <div className=" md:w-full flex justify-center items-center">
-                <h1 className="text-center">আজকে কোথায়ও তা’লিম নেই</h1>
+                <div className="my-3">
+                  <h2>আজকে - {banglaDate} ইং </h2>
+                  <h1 className="text-center">আজকে কোথায়ও তা’লিম নেই</h1>
+                </div>
               </div>
             )}
           </section>
@@ -200,7 +203,7 @@ const DashboardHome = () => {
                               {talim.masjid}
                             </p>
                             <p className="card-text">
-                              <strong> আয়োজকের মোবাইলঃ-  </strong>
+                              <strong> আয়োজকের মোবাইলঃ- </strong>
                               {talim.phone}
                             </p>
                             {initialUser?.role === "admin" && (

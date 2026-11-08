@@ -192,7 +192,9 @@ const Home = () => {
         <table class="table table-striped table-hover table-bordered text-center">
           <thead>
             <tr>
-              <th>ইউজার আইডি</th>
+              <th className="col-span-1">ইউজার আইডি</th>
+              <th>সদস্য ফরম নং</th>
+              <th>আইডি নং</th>
               <th>নাম</th>
               <th>জেলা</th>
               <th>উপজেলা</th>
@@ -200,7 +202,7 @@ const Home = () => {
               <th>ওয়ার্ড</th>
               <th>গ্রাম</th>
               <th>অবস্থান </th>
-              <th>মোবাইল নাম্বার </th>
+              <th>মোবাইল </th>
             </tr>
           </thead>
           <tbody>
@@ -208,6 +210,8 @@ const Home = () => {
               currentUsers.map((user, index) => (
                 <tr key={index}>
                   <td className="text-success"> {user.userId} </td>
+                  <td className="text-success"> {user.formNo} </td>
+                  <td className="text-success"> {user.nidNo} </td>
                   <td className="text-success"> {user.name} </td>
                   <td className="text-success"> {user.district} </td>
                   <td className="text-success"> {user.upazila} </td>

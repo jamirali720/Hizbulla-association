@@ -57,6 +57,8 @@ const ManageUsers = () => {
               <thead>
                 <tr>
                   <th>ইউজার আইডি</th>
+                  <th>আইডি নং</th>
+                  <th>সদস্য ফরম নং</th>
                   <th>নাম</th>
                   <th>জেলা</th>
                   <th>উপজেলা</th>
@@ -72,6 +74,8 @@ const ManageUsers = () => {
                 {currentUsers.map((user, index) => (
                   <tr key={index}>
                     <td className="text-success"> {user.userId} </td>
+                    <td className="text-success"> {user.nidNo} </td>
+                    <td className="text-success"> {user.formNo} </td>
                     <td className="text-success"> {user.name} </td>
                     <td className="text-success"> {user.district} </td>
                     <td className="text-success"> {user.upazila} </td>

@@ -12,9 +12,7 @@ const UpdatedUser = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const refreshList = async () => {
-      const resp = await AxiosInstance.get(
-        `/auth/profile/${userId}`,
-      );
+      const resp = await AxiosInstance.get(`/auth/profile/${userId}`);
 
       if (resp.data) {
         setUser(resp.data.data);
@@ -38,6 +36,7 @@ const UpdatedUser = () => {
       union: "",
       ward: "",
       village: "",
+      formNo:"",
     }, // Validates fields when user clicks away
   });
 
@@ -47,7 +46,9 @@ const UpdatedUser = () => {
   const ward = watch("ward");
 
   // Get dependent data
-  const selectedUpazila = locations.find((item) => item.upazilaName === upazila);
+  const selectedUpazila = locations.find(
+    (item) => item.upazila === upazila,
+  );
 
   const unions = selectedUpazila?.unions ?? [];
 
@@ -78,10 +79,10 @@ const UpdatedUser = () => {
   const onSubmit = async (data) => {
     try {
       const res = await AxiosInstance.put(
-        `/auth/update-profile/${userId}`,
+        `/auth/update-user-info/${userId}`,
         data,
       );
-      
+
       toast.success(res.data.message, { position: "bottom-center" });
       navigate("/dashboard/user-management");
       reset();
@@ -111,18 +112,11 @@ const UpdatedUser = () => {
                   <label className="form-label fw-semibold">আপনার নাম</label>
                   <input
                     type="text"
-                    className={`form-control ${errors.fullname ? "is-invalid" : ""}`}
+                    className={`form-control ${errors.name ? "is-invalid" : ""}`}
                     placeholder="আপনার নাম লিখুন"
-                    defaultValue={user?.fullname}
-                    {...register("fullname", {
-                      required: "আপনার নাম অবশ্যই দিতে হবে",
-                      minLength: {
-                        value: 3,
-                        message: "Name must be at least 3 characters",
-                      },
-                    })}
+                    defaultValue={user?.name}
+                    {...register("name")}
                   />
-                  
                 </div>
 
                 {/* জেলা নির্বাচন */}
@@ -134,14 +128,13 @@ const UpdatedUser = () => {
                     defaultValue={user?.district}
                     className={`form-control ${errors.district ? "is-invalid" : ""}`}
                     placeholder="আপনার জেলার নাম লিখুন"
-                    {...register("district", {                     
+                    {...register("district", {
                       minLength: {
                         value: 3,
                         message: "Name must be at least 3 characters",
                       },
                     })}
                   />
-                  
                 </div>
 
                 {/* Upazila selection */}
@@ -149,22 +142,19 @@ const UpdatedUser = () => {
                   <label className="form-label fw-semibold">উপজেলা</label>
 
                   <select
-                    className="form-select"                    
+                    className="form-select"
                     {...register("upazila", {
-                      
                       onChange: handleUpazilaChange,
                     })}
                   >
                     <option value="">উপজেলা নির্বাচন করুন</option>
 
                     {locations.map((item) => (
-                      <option key={item.id} value={item.upazilaName}>
-                        {item.upazilaName}
+                      <option key={item.id} value={item.upazila}>
+                        {item.upazila}
                       </option>
                     ))}
                   </select>
-
-                  
                 </div>
 
                 {/* Union */}
@@ -174,9 +164,7 @@ const UpdatedUser = () => {
                   <select
                     className="form-select"
                     disabled={!upazila}
-                   
                     {...register("union", {
-                     
                       onChange: handleUnionChange,
                     })}
                   >
@@ -188,8 +176,6 @@ const UpdatedUser = () => {
                       </option>
                     ))}
                   </select>
-
-                 
                 </div>
 
                 {/* Ward */}
@@ -200,10 +186,8 @@ const UpdatedUser = () => {
 
                   <select
                     className="form-select"
-                    
                     disabled={!union}
                     {...register("ward", {
-                     
                       onChange: handleWardChange,
                     })}
                   >
@@ -215,7 +199,6 @@ const UpdatedUser = () => {
                       </option>
                     ))}
                   </select>
-
                 </div>
 
                 {/* Village */}
@@ -225,7 +208,6 @@ const UpdatedUser = () => {
                   <select
                     className="form-select"
                     disabled={!ward}
-                   
                     {...register("village")}
                   >
                     <option value="">গ্রাম নির্বাচন করুন</option>
@@ -236,8 +218,6 @@ const UpdatedUser = () => {
                       </option>
                     ))}
                   </select>
-
-                 
                 </div>
 
                 {/* মোবাইল নাম্বার */}
@@ -251,14 +231,51 @@ const UpdatedUser = () => {
                     className={`form-control ${errors.phone ? "is-invalid" : ""}`}
                     placeholder="আপনার মোবাইল নম্বর দিন"
                     {...register("phone", {
-                     
                       pattern: {
                         value: /^(\+88)?01[3-9]\d{8}$/,
                         message: "আপনার মোবাইল নম্বর সঠিক নয় ❌",
                       },
                     })}
                   />
-                 
+                </div>
+                {/* nid number */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    জাতীয় পরিচয়পত্র নাম্বার
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={user?.nidNo}
+                    className={`form-control ${errors.nidNo ? "is-invalid" : ""}`}
+                    placeholder="জাতীয় পরিচয়পত্র নম্বর দিন"
+                    {...register("nidNo")}
+                  />
+                </div>
+                {/* sequence number */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    সিরিয়াল নাম্বার
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={user?.userId}
+                    className={`form-control ${errors.userId ? "is-invalid" : ""}`}
+                    placeholder="সিরিয়াল নম্বর দিন"
+                    {...register("userId")}
+                  />
+                </div>
+                {/* sequence number */}
+                <div className="mb-3">
+                  <label className="form-label fw-semibold">
+                    সদস্য ফরম নাম্বার
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue={user?.formNo}
+                    className={`form-control ${errors.formNo ? "is-invalid" : ""}`}
+                    placeholder="সদস্য ফরম নম্বর দিন"
+                    {...register("formNo")}
+                  />
                 </div>
 
                 {/* মুরীদ না মোহিব্বীন */}
@@ -267,10 +284,7 @@ const UpdatedUser = () => {
                     নির্বাচন করুন
                   </label>
 
-                  <select
-                    className="form-select"                   
-                    {...register("status")}
-                  >
+                  <select className="form-select" {...register("status")}>
                     <option value="">আপনার অবস্থা নির্বাচন করুন</option>
 
                     {userStatus.map((item, index) => (

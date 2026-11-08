@@ -53,7 +53,7 @@ const AllTalimsDisplayed = () => {
               <strong className="text-blue-700 font-bold">
                 {numBang(talims.length)}
               </strong>
-              টি তা’লিম আছে।
+              <strong>টি তা’লিম চলমান আছে। </strong>
             </h3>
           </div>
         </div>

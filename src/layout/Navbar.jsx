@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleLogout = () => {   
+  const handleLogout = () => {
     logout();
   };
 
@@ -22,11 +22,7 @@ const Navbar = () => {
               to="/"
               className="text-xl font-bold text-blue-600 flex items-center gap-2"
             >
-              <img
-                src={img}
-                alt="minar"
-                className="h-10 w-10"
-              />
+              <img src={img} alt="minar" className="h-10 w-10" />
               <span>আল্লাহর দল, হবেই সফল</span>
             </Link>
           </div>
@@ -58,9 +54,11 @@ const Navbar = () => {
               </button>
             ) : (
               <>
-                <button className="px-4 py-2 text-lg font-medium text-gray-700 hover:text-blue-600 transition cursor-pointer">
-                  <Link to="/auth">Account</Link>
-                </button>
+                <Link to="/auth" className="block bg-green-600 rounded-sm text-white">
+                  <button className="px-4 py-2 text-lg font-medium hover:text-blue-600 transition cursor-pointer">
+                    Account
+                  </button>
+                </Link>
               </>
             )}
           </div>
@@ -114,23 +112,23 @@ const Navbar = () => {
             Dashboard
           </Link>
           <Link
-            to="/services"
+            to="#"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
           >
             Services
           </Link>
           <Link
-            to="/contact"
+            to="#"
             className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"
           >
             Contact
           </Link>
           <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
-            <button className="btn btn-success cursor-pointer">
-              <Link className="text-white" to="/auth">
+            <Link className="text-white" to="/auth">
+              <button className="btn btn-success w-full cursor-pointer">
                 Account
-              </Link>
-            </button>
+              </button>
+            </Link>
           </div>
         </div>
       )}
