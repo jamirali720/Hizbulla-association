@@ -2,8 +2,8 @@ import axios from "axios";
 
 
 export const AxiosInstance = axios.create({
-  // baseURL: "https://hizbulla-association-server-site.vercel.app/api",
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://hizbulla-association-server-site.vercel.app/api",
+  // baseURL: "http://localhost:5000/api",
   timeout: 5000,
 }); 
 
