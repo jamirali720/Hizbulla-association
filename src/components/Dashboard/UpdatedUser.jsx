@@ -36,7 +36,7 @@ const UpdatedUser = () => {
       union: "",
       ward: "",
       village: "",
-      formNo:"",
+      formNo: "",
     }, // Validates fields when user clicks away
   });
 
@@ -46,9 +46,7 @@ const UpdatedUser = () => {
   const ward = watch("ward");
 
   // Get dependent data
-  const selectedUpazila = locations.find(
-    (item) => item.upazila === upazila,
-  );
+  const selectedUpazila = locations.find((item) => item.upazila === upazila);
 
   const unions = selectedUpazila?.unions ?? [];
 
@@ -109,7 +107,9 @@ const UpdatedUser = () => {
               <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 {/* Full Name */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">আপনার নাম</label>
+                  <label className="form-label fw-semibold">
+                    আপনার নাম - ({user?.name})
+                  </label>
                   <input
                     type="text"
                     className={`form-control ${errors.name ? "is-invalid" : ""}`}
@@ -139,7 +139,9 @@ const UpdatedUser = () => {
 
                 {/* Upazila selection */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">উপজেলা</label>
+                  <label className="form-label fw-semibold">
+                    উপজেলা - ( {user?.upazila})
+                  </label>
 
                   <select
                     className="form-select"
@@ -159,7 +161,9 @@ const UpdatedUser = () => {
 
                 {/* Union */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">ইউনিয়ন</label>
+                  <label className="form-label fw-semibold">
+                    ইউনিয়ন - ({user?.union})
+                  </label>
 
                   <select
                     className="form-select"
@@ -181,7 +185,7 @@ const UpdatedUser = () => {
                 {/* Ward */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    ওয়ার্ড নির্বাচন
+                    ওয়ার্ড নির্বাচন - ({user?.ward})
                   </label>
 
                   <select
@@ -203,7 +207,9 @@ const UpdatedUser = () => {
 
                 {/* Village */}
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">গ্রাম</label>
+                  <label className="form-label fw-semibold">
+                    গ্রাম {user?.village}
+                  </label>
 
                   <select
                     className="form-select"
@@ -223,7 +229,7 @@ const UpdatedUser = () => {
                 {/* মোবাইল নাম্বার */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    মোবাইল নাম্বার
+                    মোবাইল নাম্বার - ({user?.phone})
                   </label>
                   <input
                     type="phone"
@@ -241,7 +247,7 @@ const UpdatedUser = () => {
                 {/* nid number */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    জাতীয় পরিচয়পত্র নাম্বার
+                    জাতীয় পরিচয়পত্র নাম্বার - ({user?.nidNo})
                   </label>
                   <input
                     type="text"
@@ -254,7 +260,7 @@ const UpdatedUser = () => {
                 {/* sequence number */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    সিরিয়াল নাম্বার
+                    সিরিয়াল নাম্বার - ({user?.userId})
                   </label>
                   <input
                     type="text"
@@ -267,7 +273,7 @@ const UpdatedUser = () => {
                 {/* sequence number */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    সদস্য ফরম নাম্বার
+                    সদস্য ফরম নাম্বার - ({user?.formNo})
                   </label>
                   <input
                     type="text"
@@ -281,7 +287,7 @@ const UpdatedUser = () => {
                 {/* মুরীদ না মোহিব্বীন */}
                 <div className="mb-3">
                   <label className="form-label fw-semibold">
-                    নির্বাচন করুন
+                    নির্বাচন করুন - ( {user?.position})
                   </label>
 
                   <select className="form-select" {...register("status")}>

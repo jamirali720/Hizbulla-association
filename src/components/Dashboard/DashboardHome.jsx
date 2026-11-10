@@ -107,7 +107,7 @@ const DashboardHome = () => {
             {todaysTalims.length > 0 ? (
               <main>
                 <header className="text-center py-4 my-2 bg-green-400">
-                  <h2> {banglaDate} </h2>
+                  <h2> {banglaDate} ইং</h2>
                   <h1> আজকের তা’লিমের মাহফিল</h1>
                   <hr />
                 </header>
@@ -147,7 +147,7 @@ const DashboardHome = () => {
                         )}
                       </div>
                       <div className="card-footer">
-                        <strong> তারিখঃ- </strong> {dateFormate(talim.date)}
+                        <strong> তারিখঃ- </strong> {dateFormate(talim.date)} ইং
                       </div>
                     </div>
                   ))}
@@ -168,7 +168,7 @@ const DashboardHome = () => {
           <div className="row">
             <section>
               <header className="text-center py-4 my-2 bg-green-400">
-                <h2>{currentMonthBangla}</h2>
+                <h2>{currentMonthBangla} ইং</h2>
                 <h1 className=""> মাসের তা’লিমের সময়সূচী </h1>
                 <hr />
               </header>
@@ -216,7 +216,8 @@ const DashboardHome = () => {
                             )}
                           </div>
                           <div className="card-footer">
-                            <strong> তারিখঃ- </strong> {dateFormate(talim.date)}
+                            <strong> তারিখঃ- </strong> {dateFormate(talim.date)}{" "}
+                            ইং
                           </div>
                         </div>
                       ))}

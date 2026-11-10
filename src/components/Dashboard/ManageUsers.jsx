@@ -51,7 +51,7 @@ const ManageUsers = () => {
             জন পীরভাই/মুহিব্বীন আছেন।
           </h1>
         </div>
-        <div className="mx-auto p-4 overflow-auto">
+        <div className="table-responsive mx-auto p-4 overflow-auto">
           {currentUsers.length > 0 ? (
             <table class="table table-striped table-hover table-bordered text-center">
               <thead>
@@ -59,7 +59,7 @@ const ManageUsers = () => {
                   <th>ইউজার আইডি</th>
                   <th>আইডি নং</th>
                   <th>সদস্য ফরম নং</th>
-                  <th>নাম</th>
+                  <th>সদস্যের নাম</th>
                   <th>জেলা</th>
                   <th>উপজেলা</th>
                   <th>ইউনিয়ন</th>
@@ -74,15 +74,24 @@ const ManageUsers = () => {
                 {currentUsers.map((user, index) => (
                   <tr key={index}>
                     <td className="text-success"> {user.userId} </td>
-                    <td className="text-success"> {user.nidNo} </td>
-                    <td className="text-success"> {user.formNo} </td>
-                    <td className="text-success"> {user.name} </td>
+                    <td className="text-success">
+                      {" "}
+                      {user.nidNo ? user.nidNo : "নাই"}{" "}
+                    </td>
+                    <td className="text-success text-nowrap">
+                      {" "}
+                      {user.formNo ? user.formNo : "নাই"}{" "}
+                    </td>
+                    <td className="text-success text-nowrap"> {user.name} </td>
                     <td className="text-success"> {user.district} </td>
                     <td className="text-success"> {user.upazila} </td>
                     <td className="text-success"> {user.union} </td>
-                    <td className="text-success"> {user.ward} </td>
-                    <td className="text-success"> {user.village} </td>
-                    <td className="text-success"> {user.position} </td>
+                    <td className="text-success text-nowrap"> {user.ward} </td>
+                    <td className="text-success text-nowrap">
+                      {" "}
+                      {user.village}{" "}
+                    </td>
+                    <td className="text-success text-nowrap"> {user.position} </td>
                     <td className="text-success"> {user.phone} </td>
                     <td className="text-success flex justify-evenly">
                       {initialUser?.role === "admin" ? (
@@ -108,7 +117,7 @@ const ManageUsers = () => {
                               type="btn"
                               className="btn btn-primary  py-2 fw-semibold"
                             >
-                            Role
+                              Role
                             </button>
                           </Link>
                           <Link to={`/dashboard/add-committe/${user._id}`}>
@@ -120,7 +129,9 @@ const ManageUsers = () => {
                             </button>
                           </Link>
                         </>
-                      ) : <button>Empty</button>}
+                      ) : (
+                        <button>Empty</button>
+                      )}
                     </td>
                   </tr>
                 ))}

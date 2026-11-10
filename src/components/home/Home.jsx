@@ -37,9 +37,7 @@ const Home = () => {
   }, [search, ward, union, village, pirvaiMuhibbin]);
 
   // Get dependent data
-  const selectedUpazila = locations.find(
-    (item) => item.upazila === upazila,
-  );
+  const selectedUpazila = locations.find((item) => item.upazila === upazila);
 
   const unions = selectedUpazila?.unions ?? [];
 
@@ -90,7 +88,7 @@ const Home = () => {
           <div className="md:w-2/6 h-12 my-2 md:my-0">
             <input
               type="text"
-              class="form-control h-full"
+              className="form-control h-full"
               placeholder="নাম অথবা মোবাইল নাম্বার দিয়ে খোঁজেন"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -164,7 +162,7 @@ const Home = () => {
           </div>
           <div className="md:w-2/12 h-12 my-2 md:my-0 ">
             <select
-              class="form-select h-full"
+              className="form-select h-full"
               value={pirvaiMuhibbin}
               onChange={(e) => setPirvaiMuhibbin(e.target.value)}
             >
@@ -188,14 +186,14 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="mx-auto p-4 overflow-auto">
-        <table class="table table-striped table-hover table-bordered text-center">
+      <div className="table-responsive mx-auto p-4 overflow-auto">
+        <table class="table  table-striped table-hover table-bordered text-center">
           <thead>
             <tr>
               <th className="col-span-1">ইউজার আইডি</th>
               <th>সদস্য ফরম নং</th>
               <th>আইডি নং</th>
-              <th>নাম</th>
+              <th>সদস্যের নাম</th>
               <th>জেলা</th>
               <th>উপজেলা</th>
               <th>ইউনিয়ন</th>
@@ -210,15 +208,19 @@ const Home = () => {
               currentUsers.map((user, index) => (
                 <tr key={index}>
                   <td className="text-success"> {user.userId} </td>
-                  <td className="text-success"> {user.formNo} </td>
-                  <td className="text-success"> {user.nidNo} </td>
-                  <td className="text-success"> {user.name} </td>
+                  <td className="text-success">
+                    {user.formNo ? user.formNo : "নাই"}
+                  </td>
+                  <td className="text-success text-nowrap">
+                    {user.formNo ? user.nidNo : "নাই"}
+                  </td>
+                  <td className="text-success text-nowrap"> {user.name} </td>
                   <td className="text-success"> {user.district} </td>
                   <td className="text-success"> {user.upazila} </td>
                   <td className="text-success"> {user.union} </td>
-                  <td className="text-success"> {user.ward} </td>
-                  <td className="text-success"> {user.village} </td>
-                  <td className="text-success"> {user.position} </td>
+                  <td className="text-success text-nowrap"> {user.ward} </td>
+                  <td className="text-success text-nowrap"> {user.village} </td>
+                  <td className="text-success text-nowrap"> {user.position} </td>
                   <td className="text-success"> {user.phone} </td>
                 </tr>
               ))}

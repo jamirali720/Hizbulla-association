@@ -75,12 +75,12 @@ const AllTalimsDisplayed = () => {
                 {currentTalims.length > 0 &&
                   currentTalims.map((talim, index) => (
                     <tr key={index}>
-                      <td className="text-success"> {talim.upazila} </td>
-                      <td className="text-success"> {talim.union}</td>
-                      <td className="text-success"> {talim.ward}</td>
-                      <td className="text-success"> {talim.village}</td>
-                      <td className="text-success"> {talim.masjid}</td>
-                      <td className="text-success">
+                      <td className="text-success text-nowrap"> {talim.upazila} </td>
+                      <td className="text-success text-nowrap"> {talim.union}</td>
+                      <td className="text-success text-nowrap"> {talim.ward}</td>
+                      <td className="text-success text-nowrap"> {talim.village}</td>
+                      <td className="text-success text-nowrap"> {talim.masjid}</td>
+                      <td className="text-success text-nowrap">
                         {dateFormate(talim.date)}
                       </td>
 

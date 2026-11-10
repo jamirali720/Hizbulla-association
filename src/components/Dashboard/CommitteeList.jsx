@@ -68,7 +68,7 @@ const CommitteeList = () => {
               সর্বমোট{" = "}
               <strong className="text-blue-700 font-bold">
                 {numBang(committees.length)}
-              </strong>{" "}
+              </strong>
               জন কমিটি সদস্য আছে।
             </h3>
           </div>
@@ -145,12 +145,12 @@ const CommitteeList = () => {
             )}
           </section>
         </div>
-        <div className="mx-auto p-4 overflow-auto">
+        <div className="table-responsive mx-auto p-4 overflow-auto">
           {currentUsers.length > 0 ? (
             <table className="table table-striped table-hover table-bordered text-center">
               <thead>
                 <tr>
-                  <th>নাম</th>
+                  <th>সদস্যের নাম</th>
                   <th>কমিটির পদবী </th>
                   <th>কমিটির পর্যায় </th>
                   <th>গ্রাম</th>
@@ -167,30 +167,23 @@ const CommitteeList = () => {
                 {currentUsers.length > 0 &&
                   currentUsers.map((committee, index) => (
                     <tr key={index}>
-                      <td className="text-success"> {committee.user?.name} </td>
-                      <td className="text-success"> {committee.position} </td>
-                      <td className="text-success"> {committee.committee} </td>
-                      <td className="text-success">
-                        {" "}
-                        {committee.user?.village}{" "}
+                      <td className="text-success text-nowrap">
+                        {committee.user?.name}
                       </td>
-                      <td className="text-success"> {committee.user?.ward} </td>
-                      <td className="text-success">
-                        {" "}
-                        {committee.user?.union}{" "}
+                      <td className="text-success text-nowrap"> {committee.position} </td>
+                      <td className="text-success text-nowrap"> {committee.committee} </td>
+                      <td className="text-success text-nowrap">
+                        {committee.user?.village}
                       </td>
+                      <td className="text-success text-nowrap"> {committee.user?.ward} </td>
+                      <td className="text-success">{committee.user?.union}</td>
                       <td className="text-success">
-                        {" "}
-                        {committee.user?.upazila}{" "}
+                        {committee.user?.upazila}
                       </td>
                       <td className="text-success">
-                        {" "}
-                        {committee.user?.district}{" "}
+                        {committee.user?.district}
                       </td>
-                      <td className="text-success">
-                        {" "}
-                        {committee.user?.phone}{" "}
-                      </td>
+                      <td className="text-success">{committee.user?.phone}</td>
                       <td className="text-success"> {committee?.sorting} </td>
                       <td className="text-success md:flex justify-evenly">
                         {initialUser?.role === "admin" ? (

@@ -35,7 +35,7 @@ const Sidebar = () => {
     navigate("/");
   };
   return (
-    <aside className="w-full min-h-screen bg-gray-800 text-white p-5">
+    <aside className="md:w-full md:min-h-screen bg-gray-800 text-white p-5">
       <h2 className="text-2xl font-bold mb-8">Dashboard</h2>
 
       <nav className="space-y-2">

@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AxiosInstance } from "../../utils/axiosInstance.js";
@@ -7,11 +7,11 @@ import { useAuth } from "../../context/AuthProvider.jsx";
 const Authentication = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const {login} = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",    
+    name: "",
     phone: "",
     password: "",
   });
@@ -28,39 +28,25 @@ const Authentication = () => {
     // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^(\+88)?01[3-9]\d{8}$/;
 
-    
-    if(!phoneRegex.test(formData.phone)) {
-     toast.error("Please enter a valid Bangladeshi phone number.");
+    if (!phoneRegex.test(formData.phone)) {
+      toast.error("Please enter a valid Bangladeshi phone number.");
       return;
     }
 
-
     if (isSignUp) {
       console.log("Sign Up Data:", formData);
-     console.log("register data sumited")
     } else {
-      console.log("Sign In Data:", {
-        phone: formData.phone,        
-        password: formData.password,        
-      });
+      const res = await AxiosInstance.post("/auth/login", formData);
 
-     
-      const res = await AxiosInstance.post(
-        "/auth/login",
-        formData,
-      );
-
-      
-      if(res.data) {
+      if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         toast.success(res.data.message, { position: "bottom-center" });
-         login(res.data.token)
-         navigate('/')
+        login(res.data.token);
+        navigate("/");
+      } else {
+        toast.error(res.data.message, { position: "bottom-center" });
       }
-     
     }
-
-   
   };
 
   const toggleAuth = () => {
@@ -231,7 +217,6 @@ const Authentication = () => {
       </div>
     </div>
   );
-  ;
 };
 
 export default Authentication;
